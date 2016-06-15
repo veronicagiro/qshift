@@ -1,9 +1,9 @@
-#' Title
+#' Density function of a shifted distribution
 #'
-#' @param dist
+#' @param dist character string indicating function name
 #'
-#' @return s
-#' @export d
+#' @return density function
+#' @export
 #'
 #' @examples d
 dshift <-

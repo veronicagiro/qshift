@@ -1,9 +1,9 @@
-#' Title
+#' Distribution function of a shifted distribution
 #'
-#' @param dist s
+#' @param dist character string indicating function name
 #'
-#' @return f
-#' @export r
+#' @return distribution function
+#' @export
 #'
 #' @examples f
 pshift <-

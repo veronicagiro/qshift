@@ -1,9 +1,9 @@
-#' Title
+#' Random generation for a shifted distribution
 #'
-#' @param dist d
+#' @param dist character string indicating function name
 #'
-#' @return d
-#' @export d
+#' @return random generator function
+#' @export
 #'
 #' @examples d
 rshift <-
