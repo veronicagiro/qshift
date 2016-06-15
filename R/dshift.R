@@ -13,7 +13,7 @@ dshift <-
     #envir <- as.environment(paste("package", as.character(substitute(pkg)), sep = ":"))
 
     ddist=paste("d", dist, sep = "")
-    pdist=paste("p", dist, sep = "")
+    #pdist=paste("p", dist, sep = "")
 
     #check parameters
     #if(!missing(dist) & (!missing(ddist) | !missing(pdist)))
@@ -32,9 +32,9 @@ dshift <-
 
     #gets probability function
     #pdist <- get(pdist, mode = "function", envir = envir)
-    pdist <- get(pdist, mode = "function")
+    #pdist <- get(pdist, mode = "function")
     #gets argument of probability function
-    pargs <- formals(pdist)
+    #pargs <- formals(pdist)
     # Checks first argument of density function is named 'q'
     #if(names(pargs[1]) != "q") stop("Error: first argument of ddist must be named 'q'")
 
@@ -63,7 +63,7 @@ dshift <-
 
       #all unique arguments belonging to probability and pdist
       #pargs <- c(pargs[!is.element(names(pargs), names(call))], call[is.element(names(call), names(pargs))])
-      pargs <- intersect_args(x = pargs, y = call)
+      #pargs <- intersect_args(x = pargs, y = call)
 
       #select x only where defined by L and U
       #dargs$x <- x[x > L & x <= U]
