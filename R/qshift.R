@@ -49,8 +49,17 @@ qshift <- function (dist){
       #quantile <- pmin(pmax(L,do.call("qdist", as.list(qargs))),U)
       #quantile <- pmin(pmax(L, qp ), U)
 
-      quantile <- do.call("qdist", as.list(qargs))
-      quantile <- quantile + shift
+      #quantile_1 <- do.call("qdist", as.list(qargs))
+
+      #pargs$q <- quantile_1 + shift
+      #probability <-  do.call("pdist", as.list(pargs))
+
+      #qargs$p <- probability
+      #quantile <- do.call("qdist", as.list(qargs))
+
+      # stessa cosa che fare
+       quantile <- do.call("qdist", as.list(qargs))
+       quantile <- quantile + shift
 
       return(quantile)
 

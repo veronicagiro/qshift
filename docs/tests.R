@@ -58,7 +58,7 @@ one <- d(x = c(1,2,3,4,5), mean = 2, sd = 1, shift = 1)
 two <- d(x = c(1,2,3,4,5), mean = 2, sd = 1, shift = 2)
 
 ### prova grafica
-df <- data.frame(id = 1:5, std, one, two, stringsAsFactors = F)
+df <- data.frame(id = 1:5, zero, one, two, stringsAsFactors = F)
 
 pl <- ggplot(data=df) +
   geom_line(mapping = aes(x = id, y = zero), col="blue") +
@@ -232,13 +232,14 @@ pl <- ggplot(data=df) +
 
 pl
 
-
-p <- pshift("norm")
-zero <- p(q = seq(1, 3, length.out = 100), mean = 2, sd = 1, shift = 0)
-one <- p(q = seq(1, 3, length.out = 100), mean = 2, sd = 1, shift = 1)
-two <- p(q = seq(1, 3, length.out = 100), mean = 2, sd = 1, shift = 2)
-
 # ok
+
+qn <- qshift("norm")
+qn(zero,  mean = 2, sd = 1, shift = 0)
+qn(one,  mean = 2, sd = 1, shift = 0)
+qn(two,  mean = 2, sd = 1, shift = 0)
+
+dnorm(x = c(1,2,3,4,5), mean = 2, sd = 1)
 
 
 ## distribuzione gamma
@@ -367,13 +368,13 @@ pl
 
 
 ## distribuzione normale
-q <- qshift("norm")
-zero <- q(p = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1), mean = 2, sd = 1, shift = 0)
-one <- q(p = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1), mean = 2, sd = 1, shift = 1)
-two <- q(p = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1), mean = 2, sd = 1, shift = 2)
+qn <- qshift("norm")
+zero <- qn(p = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1), mean = 2, sd = 1, shift = 0)
+one <- qn(p = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1), mean = 2, sd = 1, shift = 1)
+two <- qn(p = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1), mean = 2, sd = 1, shift = 2)
 
 ### prova grafica
-df <- data.frame(id = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1), std, one, two, stringsAsFactors = F)
+df <- data.frame(id = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1), zero, one, two, stringsAsFactors = F)
 
 pl <- ggplot(data=df) +
   geom_line(mapping = aes(x = zero, y = id), col="blue") +
@@ -621,8 +622,36 @@ pl
 
 ##############################################################################################
 
+## distribuzione normale
+p <- pshift("norm")
+zero <- p(q = c(-1,0,1,2,3,4,5), mean = 2, sd = 1, shift = 0)
+one <- p(q = c(-1,0,1,2,3,4,5), mean = 2, sd = 1, shift = 1)
+two <- p(q = c(-1,0,1,2,3,4,5), mean = 2, sd = 1, shift = 2)
 
+### prova grafica
+df <- data.frame(id = c(-1,0,1,2,3,4,5), zero, one, two, stringsAsFactors = F)
 
+pl <- ggplot(data=df) +
+  geom_line(mapping = aes(x = id, y = zero), col="blue") +
+  geom_line(mapping = aes(x = id, y = one), col="red") +
+  geom_line(mapping = aes(x = id, y = two), col="green")
 
+pl
+
+## distribuzione normale
+qn <- qshift("norm")
+zero <- qn(p = c(0, 0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1), mean = 2, sd = 1, shift = 0)
+one <- qn(p = c(0, 0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1), mean = 2, sd = 1, shift = 1)
+two <- qn(p = c(0, 0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1), mean = 2, sd = 1, shift = 2)
+
+### prova grafica
+df <- data.frame(id = c(0, 0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1), zero, one, two, stringsAsFactors = F)
+
+pl <- ggplot(data=df) +
+  geom_line(mapping = aes(x = id, y = zero), col="blue") +
+  geom_line(mapping = aes(x = id, y = one), col="red") +
+  geom_line(mapping = aes(x = id, y = two), col="green")
+
+pl
 
 

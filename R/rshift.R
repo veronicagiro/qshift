@@ -30,9 +30,11 @@ rshift <- function (dist){
 
     rargs <- intersect_args(x = rargs, y = call)
 
-    qargs$p <- runif(n)
+    #qargs$p <- runif(n)
 
-    random <- do.call(qdist, as.list(qargs))
+    #random <- do.call(qdist, as.list(qargs))
+    set.seed(1)
+    random <- do.call(rdist, as.list(rargs))
     random <- random + shift
 
     return(random)
