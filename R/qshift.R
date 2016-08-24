@@ -43,7 +43,7 @@ qshift <-
       #quantile <- pmin(pmax(L, qp ), U)
   
       quantile <- do.call("qdist", as.list(qargs))
-      quantile <- quantile - shift
+      quantile <- quantile + shift
       
       return(quantile)
 
