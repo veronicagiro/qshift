@@ -6,8 +6,7 @@
 #' @export
 #'
 #' @examples d
-rshift <-
-  function (dist){
+rshift <- function (dist){
 
   rdist <- paste("r", dist, sep = "")
   rdist <-  get(rdist, mode = "function")

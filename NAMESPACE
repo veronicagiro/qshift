@@ -2,4 +2,5 @@
 
 export(dshift)
 export(pshift)
+export(qshift)
 export(rshift)

@@ -1,5 +1,12 @@
-qshift <-
-  function (dist){
+#' Title
+#'
+#' @param dist
+#'
+#' @return
+#' @export
+#'
+#' @examples
+qshift <- function (dist){
 
     #dist <- deparse(substitute(dist))
 
@@ -23,11 +30,11 @@ qshift <-
 
       pargs <- c(pargs[!is.element(names(pargs), names(call))], call[is.element(names(call), names(pargs))])
       pargs <- intersect_args(x = pargs, y = call)
-      
+
       #pargs$q <- eval(pargs$q) - shift
       #pargs$q <- eval(qargs$p) - shift
-      probability <-  do.call("pdist", as.list(pargs))
-      
+      #probability <-  do.call("pdist", as.list(pargs))
+
       #pUargs <- pLargs <- pargs
       #pUargs$q <- U
       #pLargs$q <- L
@@ -41,10 +48,10 @@ qshift <-
       #quantile <- do.call("qdist", as.list(probability))
       #quantile <- pmin(pmax(L,do.call("qdist", as.list(qargs))),U)
       #quantile <- pmin(pmax(L, qp ), U)
-  
+
       quantile <- do.call("qdist", as.list(qargs))
       quantile <- quantile + shift
-      
+
       return(quantile)
 
     }
