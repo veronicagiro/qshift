@@ -28,6 +28,24 @@ std <- dbinom(x = c(1,2,3,4,5), size = 6, prob = 0.5)
 # d coincode con dbinom
 
 
+## distribuzione binomiale negativa
+d <- dshift("nbinom")
+zero <- d(x = c(2,3,4,5), size = 23, mu = 4, shift = 0)
+one <- d(x = c(2,3,4,5), size = 23, mu = 4, shift = 1)
+two <- d(x = c(2,3,4,5), size = 23, mu = 4, shift = 2)
+
+### prova grafica
+df <- data.frame(id = 2:5, zero, one, two, stringsAsFactors = F)
+
+pl <- ggplot(data=df) +
+  geom_line(mapping = aes(x = id, y = zero), col="blue") +
+  geom_line(mapping = aes(x = id, y = one), col="red") +
+  geom_line(mapping = aes(x = id, y = two), col="green")
+
+pl
+# ok
+
+
 ## distribuzione poisson
 d <- dshift("pois")
 zero <- d(x = c(1,2,3,4,5), lambda = 1.5, shift = 0)
@@ -49,6 +67,58 @@ pl
 zero <- d(x = c(1,2,3,4,5), lambda = 1.5, shift = 0)
 std <- dpois(x = c(1,2,3,4,5), lambda = 1.5)
 # d coincode con dpois
+
+
+## distribuzione geometrica
+d <- dshift("geom")
+zero <- d(x = c(2,3,4,5), prob = 0.4, shift = 0)
+one <- d(x = c(2,3,4,5), prob = 0.4, shift = 1)
+two <- d(x = c(2,3,4,5), prob = 0.4, shift = 2)
+
+### prova grafica
+df <- data.frame(id = 2:5, zero, one, two, stringsAsFactors = F)
+
+pl <- ggplot(data=df) +
+  geom_line(mapping = aes(x = id, y = zero), col="blue") +
+  geom_line(mapping = aes(x = id, y = one), col="red") +
+  geom_line(mapping = aes(x = id, y = two), col="green")
+
+pl
+# ok
+
+## distribuzione ipergeometrica
+d <- dshift("hyper")
+zero <- d(x = c(2,3,4,5,6,7,8,9,10), m = 10, n = 7, k = 8, shift = 0)
+one <- d(x = c(2,3,4,5,6,7,8,9,10), m = 10, n = 7, k = 8, shift = 1)
+two <- d(x = c(2,3,4,5,6,7,8,9,10), m = 10, n = 7, k = 8, shift = 2)
+
+### prova grafica
+df <- data.frame(id = 2:10, zero, one, two, stringsAsFactors = F)
+
+pl <- ggplot(data=df) +
+  geom_line(mapping = aes(x = id, y = zero), col="blue") +
+  geom_line(mapping = aes(x = id, y = one), col="red") +
+  geom_line(mapping = aes(x = id, y = two), col="green")
+
+pl
+# ok
+
+## distribuzione uniforme (qualche  dubbio)
+d <- dshift("unif")
+zero <- d(x = c(1,2,3,4,5), min = 0, max = 4, shift = 0)
+one <- d(x = c(1,2,3,4,5), min = 0, max = 4, shift = 1)
+two <- d(x = c(1,2,3,4,5), min = 0, max = 4, shift = 2)
+
+### prova grafica
+df <- data.frame(id = 1:5, zero, one, two, stringsAsFactors = F)
+
+pl <- ggplot(data=df) +
+  geom_line(mapping = aes(x = id, y = zero), col="blue") +
+  geom_line(mapping = aes(x = id, y = one), col="red") +
+  geom_line(mapping = aes(x = id, y = two), col="green")
+
+pl
+# ok
 
 
 ## distribuzione normale
@@ -73,6 +143,108 @@ zero <- d(x = c(1,2,3,4,5), mean = 2, sd = 1, shift = 0)
 std <- dnorm(x = c(1,2,3,4,5), mean = 2, sd = 1)
 # d coincode con dnorm
 
+
+## distribuzione beta
+d <- dshift("beta")
+zero <- d(x = c(0,1,2,3,4,5), shape1 = 1, shape2 = 1.5, shift = 0)
+one <- d(x = c(0,1,2,3,4,5), shape1 = 1, shape2 = 1.5, shift = 1)
+two <- d(x = c(0,1,2,3,4,5), shape1 = 1, shape2 = 1.5, shift = 2)
+
+### prova grafica
+df <- data.frame(id = 0:5, zero, one, two, stringsAsFactors = F)
+
+pl <- ggplot(data=df) +
+  geom_line(mapping = aes(x = id, y = zero), col="blue") +
+  geom_line(mapping = aes(x = id, y = one), col="red") +
+  geom_line(mapping = aes(x = id, y = two), col="green")
+
+pl
+# ok
+
+## distribuzione logis
+d <- dshift("logis")
+zero <- d(x = c(0,1,2,3,4,5), location = 5, scale = 2, shift = 0)
+one <- d(x = c(0,1,2,3,4,5), location = 5, scale = 2, shift = 1)
+two <- d(x = c(0,1,2,3,4,5), location = 5, scale = 2, shift = 2)
+
+### prova grafica
+df <- data.frame(id = 0:5, zero, one, two, stringsAsFactors = F)
+
+pl <- ggplot(data=df) +
+  geom_line(mapping = aes(x = id, y = zero), col="blue") +
+  geom_line(mapping = aes(x = id, y = one), col="red") +
+  geom_line(mapping = aes(x = id, y = two), col="green")
+
+pl
+# ok
+
+## distribuzione logis
+d <- dshift("lnorm")
+zero <- d(x = c(3,4,5, 6,7,8,9,10), meanlog = 0 ,sdlog = 0.5, shift = 0)
+one <- d(x = c(3,4,5, 6,7,8,9,10), meanlog = 0 ,sdlog = 0.5, shift = 1)
+two <- d(x = c(3,4,5, 6,7,8,9,10), meanlog = 0 ,sdlog = 0.5, shift = 2)
+
+### prova grafica
+df <- data.frame(id = 3:10, zero, one, two, stringsAsFactors = F)
+
+pl <- ggplot(data=df) +
+  geom_line(mapping = aes(x = id, y = zero), col="blue") +
+  geom_line(mapping = aes(x = id, y = one), col="red") +
+  geom_line(mapping = aes(x = id, y = two), col="green")
+
+pl
+# ok
+
+## distribuzione cauchy
+d <- dshift("cauchy")
+zero <- d(x = c(0,1,2,3,4,5), location = 0, scale = 1, shift = 0)
+one <- d(x = c(0,1,2,3,4,5), location = 0, scale = 1, shift = 1)
+two <- d(x = c(0,1,2,3,4,5), location = 0, scale = 1, shift = 2)
+
+### prova grafica
+df <- data.frame(id = 0:5, zero, one, two, stringsAsFactors = F)
+
+pl <- ggplot(data=df) +
+  geom_line(mapping = aes(x = id, y = zero), col="blue") +
+  geom_line(mapping = aes(x = id, y = one), col="red") +
+  geom_line(mapping = aes(x = id, y = two), col="green")
+
+pl
+# ok
+
+## distribuzione esponenziale
+d <- dshift("exp")
+zero <- d(x = c(0,1,2,3,4,5), rate = 2, shift = 0)
+one <- d(x = c(0,1,2,3,4,5), rate = 2, shift = 1)
+two <- d(x = c(0,1,2,3,4,5), rate = 2, shift = 2)
+
+### prova grafica
+df <- data.frame(id = 0:5, zero, one, two, stringsAsFactors = F)
+
+pl <- ggplot(data=df) +
+  geom_line(mapping = aes(x = id, y = zero), col="blue") +
+  geom_line(mapping = aes(x = id, y = one), col="red") +
+  geom_line(mapping = aes(x = id, y = two), col="green")
+
+pl
+# ok
+
+## distribuzione f
+d <- dshift("f")
+zero <- d(x = c(1,2,3,4,5), df1 = 3, df2 = 4, shift = 0)
+one <- d(x = c(1,2,3,4,5), df1 = 3, df2 = 4, shift = 1)
+two <- d(x = c(1,2,3,4,5), df1 = 3, df2 = 4, shift = 2)
+
+### prova grafica
+df <- data.frame(id = 1:5, zero, one, two, stringsAsFactors = F)
+
+pl <- ggplot(data=df) +
+  geom_line(mapping = aes(x = id, y = zero), col="blue") +
+  geom_line(mapping = aes(x = id, y = one), col="red") +
+  geom_line(mapping = aes(x = id, y = two), col="green")
+
+pl
+# ok
 
 ## distribuzione gamma
 d <- dshift("gamma")
@@ -167,6 +339,41 @@ std <- dchisq(x = c(1,2,3,4,5), df = 2)
 # d coincode con dt
 
 
+## distribuzione wilcox
+d <- dshift("wilcox")
+zero <- d(x = c(1,2,3,4,5), m = 5, n = 6, shift = 0)
+one <- d(x = c(1,2,3,4,5), m = 5, n = 6, shift = 1)
+two <- d(x = c(1,2,3,4,5), m = 5, n = 6, shift = 2)
+
+### prova grafica
+df <- data.frame(id = 1:5, zero, one, two, stringsAsFactors = F)
+
+pl <- ggplot(data=df) +
+  geom_line(mapping = aes(x = id, y = zero), col="blue") +
+  geom_line(mapping = aes(x = id, y = one), col="red") +
+  geom_line(mapping = aes(x = id, y = two), col="green")
+
+pl
+# ok
+
+## distribuzione signrank
+d <- dshift("signrank")
+zero <- d(x = c(1,2,3,4,5), n = 6, shift = 0)
+one <- d(x = c(1,2,3,4,5), n = 6, shift = 1)
+two <- d(x = c(1,2,3,4,5), n = 6, shift = 2)
+
+### prova grafica
+df <- data.frame(id = 1:5, zero, one, two, stringsAsFactors = F)
+
+pl <- ggplot(data=df) +
+  geom_line(mapping = aes(x = id, y = zero), col="blue") +
+  geom_line(mapping = aes(x = id, y = one), col="red") +
+  geom_line(mapping = aes(x = id, y = two), col="green")
+
+pl
+# ok
+
+
 ##############################################################################################
 
 ##########
@@ -195,6 +402,23 @@ pl
 zero <- p(q = c(1,2,3,4,5), size = 6, prob = 0.5, shift = 0)
 std <- pbinom(q = c(1,2,3,4,5), size = 6, prob = 0.5)
 # d coincode con dt
+
+## distribuzione binomiale negativa
+p <- pshift("nbinom")
+zero <- p(q = c(2,3,4,5), size = 23, mu = 4, shift = 0)
+one <- p(q = c(2,3,4,5), size = 23, mu = 4, shift = 1)
+two <- p(q = c(2,3,4,5), size = 23, mu = 4, shift = 2)
+
+### prova grafica
+df <- data.frame(id = 2:5, zero, one, two, stringsAsFactors = F)
+
+pl <- ggplot(data=df) +
+  geom_line(mapping = aes(x = id, y = zero), col="blue") +
+  geom_line(mapping = aes(x = id, y = one), col="red") +
+  geom_line(mapping = aes(x = id, y = two), col="green")
+
+pl
+# ok
 
 
 ## distribuzione poisson
@@ -317,6 +541,41 @@ pl
 
 # ok
 
+## distribuzione wilcox
+p <- pshift("wilcox")
+zero <- p(q = c(1,2,3,4,5), m = 5, n = 6, shift = 0)
+one <- p(q = c(1,2,3,4,5), m = 5, n = 6, shift = 1)
+two <- p(q = c(1,2,3,4,5), m = 5, n = 6, shift = 2)
+
+### prova grafica
+df <- data.frame(id = 1:5, zero, one, two, stringsAsFactors = F)
+
+pl <- ggplot(data=df) +
+  geom_line(mapping = aes(x = id, y = zero), col="blue") +
+  geom_line(mapping = aes(x = id, y = one), col="red") +
+  geom_line(mapping = aes(x = id, y = two), col="green")
+
+pl
+
+# ok
+
+## distribuzione signrank
+p <- pshift("signrank")
+zero <- p(q = c(1,2,3,4,5), n = 6, shift = 0)
+one <- p(q = c(1,2,3,4,5), n = 6, shift = 1)
+two <- p(q = c(1,2,3,4,5), n = 6, shift = 2)
+
+### prova grafica
+df <- data.frame(id = 1:5, zero, one, two, stringsAsFactors = F)
+
+pl <- ggplot(data=df) +
+  geom_line(mapping = aes(x = id, y = zero), col="blue") +
+  geom_line(mapping = aes(x = id, y = one), col="red") +
+  geom_line(mapping = aes(x = id, y = two), col="green")
+
+pl
+
+# ok
 
 #########################################################################################
 
