@@ -1,0 +1,78 @@
+---
+title: "R package qtdshift: A functional programming approach to shifted probability ditributions"
+author: "Veronica"
+date: "August 25, 2016"
+output: html_document
+---
+
+## Introduction
+
+This paper aims to be an implementation of the methodology used by Andrea Spano article, "R package qdist: A functional programming approach to truncated probability ditributions", which provides an alternative method for computing from truncated probability distribution using a functional programming approach. I was inspired by his work to implement the same methodology to shifted probability distributions. 
+
+## Shifted probability function in R
+
+Why shifted distributions? Shift is distribution trasformation used daily in many statistical fields. R does not provide a specific package for shifted distribution models, but it provides package `stats` which contains a wide set of functions for standard distribution models. I refer to: probability, density, quantile and random number generator functions, that share a stable naming convention both for the names of the functions and in the first argument of these functions. In particular:
+
+* probability distribution functions: `p<dist>(q)` with `q` vector of quantiles;
+* density functions: `d<dist>(x)` with `x` vector of quantiles;
+* quantile functions: `q<dist>(p)` with `p` vector of probabilities;
+* random number generation: `r<dist>(n)` with `n` number of observations.
+
+where `<dist>` indicates the conventional name of distribution family.
+
+Let us see an example.  
+Considering the Normal distribution (`norm`), we have: `pnorm(q)`, `dnorm(x)`, `qnorm(p)` and `rnorm(n)`. 
+
+So, we use to write:
+
+```{r dnorm}
+dnorm(x = 6:10, mean = 8, sd = 1)
+```
+
+to get density values at 6:10 from a normal distribution with parameters `mean = 8` and `sd = 1`.
+
+
+Going back to shifted distribution, we could easily write a shifted version for `dnorm()`, as:
+
+```{r}
+sdnorm <- function(x, mean = 0, sd = 1, shift = 0, ...){
+            x_shifted <- x - shift
+            density <- dnorm(x = x_shifted, mean = mean, sd = sd, ...)
+            return(density)
+}
+```
+
+So, we write:
+
+```{r}
+sdnorm(x = 8:12, mean = 10, sd = 1, shift = 1)
+```
+
+to get density values at 6:10 from a normal distribution with parameters `mean = 8` and `sd = 1`, shifted of 1 unit.
+
+At first view, this approach seems easy and cool but thinking about it I realized that I would need to write a different function for each probability distribution I would like to work with. So I decided to use functional programming approach to develop four general functions which compute shifted distribution models for any distribution chosen:
+
+* `pshift()` for shifted probability distributions;
+* `dshift()` for shifted density functions;
+* `qshift()` for shifted quantile functions;
+* `rshift()` for shifted random numbers generator functions. 
+
+These functions are included in `qtdshift` package available at [https://github.com/veronicagiro/qshift](https://github.com/veronicagiro/qshift).
+
+They share the same logic: they take as input a probability distribution as a character string and return the equivalent shifted distribution as a function object.
+
+```{r, eval = FALSE}
+devtools::install_github("veronicagiro/qshift", build=FALSE)
+require(qtdshift)
+spnorm <- pshift("norm")
+sdnorm <- dshift("norm")
+sqnorm <- qshift("norm")
+srnorm <- rshift("norm")
+```
+
+
+
+<!--
+esempi
+-->
+
