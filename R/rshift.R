@@ -73,12 +73,10 @@ rshift <- function(dist){
     # pargs <- intersect_args(x = pargs, y = call)
     # qargs <- intersect_args(x = qargs, y = call)
 
-
     #qargs$p <- runif(n)
     #random <- do.call(qdist, as.list(qargs))
 
     set.seed(1)
-
     # method for computing random generated values for shifted distributions
     random <- do.call(rdist, as.list(rargs))
     random <- random + shift
