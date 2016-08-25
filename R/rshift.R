@@ -76,7 +76,7 @@ rshift <- function(dist){
     #qargs$p <- runif(n)
     #random <- do.call(qdist, as.list(qargs))
 
-    set.seed(1)
+    set.seed(1) # tenere?
     # method for computing random generated values for shifted distributions
     random <- do.call(rdist, as.list(rargs))
     random <- random + shift
