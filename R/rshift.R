@@ -30,20 +30,26 @@
 #' @examples
 #'
 #' # Binomial Distribution
-#' rb <- rshift("binom")
+#' rb <- rshift("binom", set_seed =F)
+#' set.seed(1)
 #' zero_shift <- rb(n = 10000, size = 6, prob = 0.5, shift = 0)
 #' zero_shift
+#' set.seed(1)
 #' one_shift <- rb(n = 10000, size = 6, prob = 0.5, shift = 1)
 #' one_shift
+#' set.seed(1)
 #' two_shift <- rb(n = 10000, size = 6, prob = 0.5, shift = 2)
 #' two_shift
 #'
 #' # Weibull Distribution
 #' rw <- rshift("weibull")
+#' set.seed(1)
 #' zero_shift <- rw(n = 1000, shape = 1.4, scale = 3, shift = 0)
 #' zero_shift
+#' set.seed(1)
 #' one_shift <- rw(n = 1000, shape = 1.4, scale = 3, shift = 1)
 #' one_shift
+#' set.seed(1)
 #' two_shift <- rw(n = 1000, shape = 1.4, scale = 3, shift = 2)
 #' two_shift
 #'
@@ -73,10 +79,15 @@ rshift <- function(dist){
     # pargs <- intersect_args(x = pargs, y = call)
     # qargs <- intersect_args(x = qargs, y = call)
 
-    #qargs$p <- runif(n)
-    #random <- do.call(qdist, as.list(qargs))
+    # qargs$p <- runif(n)
+    # random_1 <- do.call(qdist, as.list(qargs))
+    # random <- random + shift
 
-    set.seed(1) # tenere?
+    # Define starting point for random computation or not
+    if(set_seed){
+      set.seed(1)
+    }
+
     # method for computing random generated values for shifted distributions
     random <- do.call(rdist, as.list(rargs))
     random <- random + shift
@@ -85,8 +96,8 @@ rshift <- function(dist){
 
   }
 
-  # add to random generation function formals shift with values as passed with rshift
-  formals(random) <-  c(formals(rdist), eval(substitute(alist(shift=0))))
+  # add to random generation function formals shift and set_seed with values as passed with rshift
+  formals(random) <-  c(formals(rdist), eval(substitute(alist(shift=0, set_seed = FALSE))))
   # return random generation function
   return(random)
 }
