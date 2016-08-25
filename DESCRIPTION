@@ -1,7 +1,7 @@
-Package: qshift
+Package: qtdshift
 Type: Package
 Title: Distribution factory
-Version: 0.1.0
+Version: 0.5.0
 Author: Veronica Giro
 Maintainer: Veronica Giro <veronica.giro@quantide.com>
 Description: Generate shifted density, probability, quantile and random
