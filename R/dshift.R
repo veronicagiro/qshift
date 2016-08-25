@@ -45,7 +45,7 @@
 #' two_shift <- dn(x = c(1,2,3,4,5), mean = 2, sd = 1, shift = 2)
 #' two_shift
 #'
-dshift <- function (dist){
+dshift <- function(dist){
 
     ddist=paste("d", dist, sep = "")
 
