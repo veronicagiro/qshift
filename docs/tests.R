@@ -606,6 +606,25 @@ zero <- q(p = c(0.1,0.2,0.3,0.4,0.5), size = 6, prob = 0.5, shift = 0)
 std <- qbinom(p = c(0.1,0.2,0.3,0.4,0.5), size = 6, prob = 0.5)
 # q coincode con qbinom
 
+## distribuzione binomiale negativa
+q <- qshift("nbinom")
+zero <- q(p = c(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1), size = 6, mu = 4, shift = 0)
+one <- q(p = c(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1), size = 6, mu = 4, shift = 1)
+two <- q(p = c(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1), size = 6, mu = 4, shift = 2)
+
+### prova grafica
+df <- data.frame(id = c(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1), zero, one, two, stringsAsFactors = F)
+
+pl <- ggplot(data=df) +
+  geom_line(mapping = aes(y = id, x = zero), col="blue") +
+  geom_line(mapping = aes(y = id, x = one), col="red") +
+  geom_line(mapping = aes(y = id, x = two), col="green")
+
+pl
+
+# ok
+
+
 
 ## distribuzione poisson
 q <- qshift("pois")
