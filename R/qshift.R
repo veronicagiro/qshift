@@ -23,7 +23,7 @@
 #'   \item signrank Wilcoxon Signed Rank Statistic Distribution
 #' }
 #'
-#' @return quantile function of specified distribution
+#' @return numeric vector of the quantile function of a specified distribution
 #' @export
 #'
 #' @examples

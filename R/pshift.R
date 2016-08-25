@@ -23,7 +23,7 @@
 #'   \item signrank Wilcoxon Signed Rank Statistic Distribution
 #' }
 #'
-#' @return distribution function of specified distribution
+#' @return numeric vector of the distribution function of a specified distribution
 #' @export
 #'
 #' @examples
