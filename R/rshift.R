@@ -61,14 +61,6 @@ rshift <- function(dist){
   # gets argument of random generation function
   rargs <-  formals(rdist)
 
-  # qdist <- paste("q", dist, sep = "")
-  # qdist <-  get(qdist, mode = "function")
-  # qargs <-  formals(qdist)
-  #
-  # pdist <- paste("p", dist, sep = "")
-  # pdist <-  get(pdist, mode = "function")
-  # pargs <-  formals(pdist)
-
   random <- function(...){
 
     # gets random generation arguments
@@ -76,12 +68,6 @@ rshift <- function(dist){
 
     # as a result, the whole string gets all unique arguments belonging to random generation function and rdist
     rargs <- intersect_args(x = rargs, y = call)
-    # pargs <- intersect_args(x = pargs, y = call)
-    # qargs <- intersect_args(x = qargs, y = call)
-
-    # qargs$p <- runif(n)
-    # random_1 <- do.call(qdist, as.list(qargs))
-    # random <- random + shift
 
     # Define starting point for random computation or not
     if(set_seed){

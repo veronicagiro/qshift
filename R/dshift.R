@@ -65,7 +65,8 @@ dshift <- function(dist){
       dargs <- intersect_args(x = dargs, y = call)
 
       # method for computing density values for shifted distributions
-      dargs$x <- eval(dargs$x) - shift
+      dargs$x <- eval(dargs$x)
+      dargs$x <- dargs$x - shift
       density <- do.call("ddist", as.list(dargs))
 
       # returns density values for shifted distributions

@@ -50,19 +50,10 @@ qshift <- function (dist){
 
     qdist=paste("q", dist, sep = "")
 
-    # uncomment if use solution 1
-    # gets distribution function
-    #pdist=paste("p", dist, sep = "")
-
     # gets quantile function
     # gets argument of quantile function
     qdist <-  get(qdist, mode = "function")
     qargs <-  formals(qdist)
-
-    # uncomment if use solution 1
-    # gets argument of distribution function
-    # pdist <-  get(pdist, mode = "function")
-    # pargs <- formals(pdist)
 
     # Output function starts here
     quantile <- function() {
@@ -73,19 +64,7 @@ qshift <- function (dist){
       # as a result, the whole string gets all unique arguments belonging to quantile function and qdist
       qargs <- intersect_args(x = qargs, y = call)
 
-      # uncomment if use solution 1
-      #pargs <- c(pargs[!is.element(names(pargs), names(call))], call[is.element(names(call), names(pargs))])
-      #pargs <- intersect_args(x = pargs, y = call)
-
-      # method for computing quantile values for shifted distributions
-      # Solution 1
-      #quantile_1 <- do.call("qdist", as.list(qargs))
-      #pargs$q <- quantile_1 + shift
-      #probability <- do.call("pdist", as.list(pargs))
-      #qargs$p <- probability
-      #quantile <- do.call("qdist", as.list(qargs))
-
-      # Solution 2 (correct?)
+      # method for computing quantiles values for shifted distributions
        quantile <- do.call("qdist", as.list(qargs))
        quantile <- quantile + shift
 
