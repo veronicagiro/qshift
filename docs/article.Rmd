@@ -1,19 +1,23 @@
 ---
-title: 'R package qtdshift: A functional programming approach to shifted probability distributions'
+title: 'R package qshift: A functional programming approach to shifted probability distributions'
 author: "Veronica"
 date: "August 25, 2016"
-output: pdf_document
+output:
+  html_document:
+    theme: null
+    highlight: null
 ---
 
 ## Introduction
 
-Shifted distributions are used daily in many statistical fields.   
-A shifted distribution is a distribution with a constant added, $Y = X + a$, where $X$ and $Y$ are random variables and $a$ is a constant value.  
-The aim of this paper is to describe an R package, `qdtshift` which generates shifted distribution models for any distribution chosen. The package was realized using a functional programming approach and inspires its computational method to Andrea Spanò article "R package qdist: A functional programming approach to truncated probability ditributions", which provides an alternative method for computing from truncated probability distribution using a functional programming approach.
+Shifted distributions are used daily in many statistical fields.  
+Given a random variable $X$ with distribution function $F(x)$, a shifted random variable $Y$ from $X$ is a random variable with a constant, $k$, added, defined as $Y = X+k$, with distribution function $F(x-k)$. $Y$ support changes according to shift value.
+
+The aim of this paper is to describe an R package, `qshift` which generates shifted distribution functions for any distribution chosen. The package was realized using a functional programming approach and inspires its computational method to Andrea Spanò article "R package qdist: A functional programming approach to truncated probability ditributions", which provides an alternative method for computing from truncated probability distribution using a functional programming approach.
 
 ## Shifted probability functions in R
 
-R does not provide a specific package for shifted distribution models, but it provides package `stats` which contains a wide set of functions for standard distribution models: probability, density, quantile and random number generator functions. All them share a stable naming convention both for the names of the functions and in the first argument of these functions. In particular:
+R does not provide a specific package for shifted distribution functions, but it provides package `stats` which contains a wide set of functions for standard distribution functions: probability, density, quantile and random number generator functions. All them share a stable naming convention both for the names of the functions and in the first argument of these functions. In particular:
 
 * density functions: `d<dist>(x)` with `x` vector of quantiles;
 * probability distribution functions: `p<dist>(q)` with `q` vector of quantiles;
@@ -49,16 +53,16 @@ So we replicate the previous example but shifting the Normal distribution of 1 u
 shift_dnorm(x = 6:10, mean = 8, sd = 1, shift = 1)
 ```
 
-At first view, this approach seems easy and cool but thinking about it, we realize that we would need to write a different function for each probability distribution we would like to work with. Functional programming approach could be the solution, as Andrea Spanò demonstrates in his article (see "R package qdist: A functional programming approach to truncated probability ditributions" for more details).   
+At first view, this approach seems easy and cool but thinking about it, we realize that we would need to write a different function for each probability distribution we would like to work with. Functional programming approach could be a solution, as Andrea Spanò demonstrates in his article (see "R package qdist: A functional programming approach to truncated probability ditributions" for more details).   
 
-`qtdshift` package includes four general functions which compute shifted distribution models for any distribution chosen:
+`qshift` package includes four general functions which compute shifted distribution models for any distribution chosen:
 
 * `dshift()` for shifted density functions;
 * `pshift()` for shifted probability distributions;
 * `qshift()` for shifted quantile functions;
 * `rshift()` for shifted random numbers generator functions. 
 
-`qtdshift` package is available at [https://github.com/veronicagiro/qshift](https://github.com/veronicagiro/qshift).
+`qshift` package is available at [https://github.com/veronicagiro/qshift](https://github.com/veronicagiro/qshift).
 
 ```{r github, eval = FALSE}
 devtools::install_github("veronicagiro/qshift", build=FALSE)
@@ -66,8 +70,8 @@ devtools::install_github("veronicagiro/qshift", build=FALSE)
 
 The four functions share the same logic: they take as input a probability distribution name, as a character string, and return the equivalent shifted distribution as a function object. 
 
-```{r qtdshift, message=FALSE}
-require(qtdshift)
+```{r qshift, message=FALSE}
+require(qshift)
 sdnorm <- dshift("norm") # density function
 spnorm <- pshift("norm") # probability function
 sqnorm <- qshift("norm") # quantile function
@@ -75,7 +79,7 @@ srnorm <- rshift("norm") # random generation function
 ```
 
 
-Talking about the computational process, we can say that package `qtdshift` is based on two key concepts being part of the functional nature of the R programming language:
+Talking about the computational process, package `qshift` is based on two key concepts being part of the functional nature of the R programming language:
 
 * the environment of a function can be used as a placeholder for other objects;
 * function formals can be manipulated.
@@ -97,7 +101,7 @@ args(dnorm)
 
 Other references are in chapters [Environments](http://www.quantide.com/website/ramarro-chapter-03/) and [Functions](http://www.quantide.com/website/ramarro-chapter-04/) of Andrea Spanò weeb Book [Ramarro](http://www.quantide.com/website/ramarro-r-for-developers/), available on Quantide web site.
 
-### Examples
+## Examples
 
 Let us consider the Normal distribution and the previously defined functions `sdnorm()`, `spnorm()`, `sqnorm()` and `srnorm()`.
 
@@ -131,7 +135,7 @@ pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=sdnorm_type)) +
                                 "negative_shifted" = "#FF89B4")) +
   xlab("Value") + ylab("Density") +
   ggtitle("Density plot for shifted and non-shifted normal distribution") +
-  theme(legend.title=element_blank(), legend.text= element_text(size=12),
+  theme(legend.title=element_blank(), legend.text= element_text(size=10),
   plot.title = element_text(size=14), axis.title=element_text(size=12))
 
 print(pl)
@@ -161,7 +165,7 @@ pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=spnorm_type)) +
                                 "negative_shifted" = "#FF89B4")) +
   xlab("Quantile") + ylab("Probability") +
   ggtitle("Probability plot for shifted and non-shifted normal distribution") +
-  theme(legend.title=element_blank(), legend.text= element_text(size=12),
+  theme(legend.title=element_blank(), legend.text= element_text(size=10),
   plot.title = element_text(size=14), axis.title=element_text(size=12))
 
 print(pl)
@@ -193,7 +197,7 @@ pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=sqnorm_type)) +
                                 "negative_shifted" = "#FF89B4")) +
   ylab("Quantile") + xlab("Probability") +
   ggtitle("Quantile plot for shifted and non-shifted normal distribution") +
-  theme(legend.title=element_blank(), legend.text= element_text(size=12),
+  theme(legend.title=element_blank(), legend.text= element_text(size=10),
   plot.title = element_text(size=14), axis.title=element_text(size=12))
 
 print(pl)
@@ -223,26 +227,26 @@ pl <- pl <- ggplot(data = df, mapping = aes(x=value, group=srnorm_type, fill=srn
                                 "positive_shifted" = "#89FF99", 
                                 "negative_shifted" = "#FF89B4")) +
   ggtitle("Density plot for shifted and non-shifted normal distribution") +
-  theme(legend.title=element_blank(), legend.text= element_text(size=12),
+  theme(legend.title=element_blank(), legend.text= element_text(size=10),
   plot.title = element_text(size=14), axis.title=element_text(size=12))
 
 print(pl)
     ```
 
+As expected, the Normal shifted distribution is a Normal distribution with changed mean. The change on the mean is equal to the shift.
   
 As we know, Normal distribution support goes from $-\infty$ to $+\infty$. What happens considerig a distribution with a limited support?   
 Let us consider the Uniform distribution. 
 
 First of all we have to define its probability functions:
 
-```{r qtdshift_unif}
+```{r qshift_unif}
 sdunif <- dshift("unif")
 spunif <- pshift("unif")
 squnif <- qshift("unif")
 srunif <- rshift("unif")
 ```
 
-Now the newly created functions are ready for computing from shifted probability models.  
 We limited Uniform support between 6 and 12. 
 
 * Density function, `sdunif()`:  
@@ -264,13 +268,13 @@ df <- data.frame(x=x,
                   value = c(not_shifted, positive_shifted, negative_shifted))
 
 pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=sdunif_type)) +
-  geom_line(size=1) +
+  geom_line(size=1, alpha =0.8) +
   scale_color_manual(values = c("not_shifted" = "cyan3", 
                                 "positive_shifted" = "#89FF99", 
                                 "negative_shifted" = "#FF89B4")) +
   xlab("Value") + ylab("Density") +
   ggtitle("Density plot for shifted and non-shifted uniform distribution") +
-  theme(legend.title=element_blank(), legend.text= element_text(size=12),
+  theme(legend.title=element_blank(), legend.text= element_text(size=10),
   plot.title = element_text(size=14), axis.title=element_text(size=12))
 
 print(pl)
@@ -294,13 +298,13 @@ df <- data.frame(x=x,
                   value = c(not_shifted, positive_shifted, negative_shifted))
 
 pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=spunif_type)) +
-  geom_line(size=1) +
+  geom_line(size=1, alpha =0.8) +
   scale_color_manual(values = c("not_shifted" = "cyan3", 
                                 "positive_shifted" = "#89FF99", 
                                 "negative_shifted" = "#FF89B4")) +
   xlab("Quantile") + ylab("Probability") +
   ggtitle("Probability plot for shifted and non-shifted uniform distribution") +
-  theme(legend.title=element_blank(), legend.text= element_text(size=12),
+  theme(legend.title=element_blank(), legend.text= element_text(size=10),
   plot.title = element_text(size=14), axis.title=element_text(size=12))
 
 print(pl)
@@ -325,13 +329,13 @@ df <- data.frame(x=x,
                   value = c(not_shifted, positive_shifted, negative_shifted))
 
 pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=squnif_type)) +
-  geom_line(size=1) +
+  geom_line(size=1, alpha =0.8) +
   scale_color_manual(values = c("not_shifted" = "cyan3",  
                                 "positive_shifted" = "#89FF99", 
                                 "negative_shifted" = "#FF89B4")) +
   ylab("Quantile") + xlab("Probability") +
   ggtitle("Quantile plot for shifted and non-shifted uniform distribution") +
-  theme(legend.title=element_blank(), legend.text= element_text(size=12),
+  theme(legend.title=element_blank(), legend.text= element_text(size=10),
   plot.title = element_text(size=14), axis.title=element_text(size=12))
 
 print(pl)
@@ -363,7 +367,7 @@ pl <- pl <- ggplot(data = df, mapping = aes(x=value, group=srunif_type, fill=sru
                                 "negative_shifted" = "#FF89B4")) +
   xlab("Value") + ylab("Density") +
   ggtitle("Density plot for shifted and non-shifted uniform distribution") +
-  theme(legend.title=element_blank(), legend.text= element_text(size=12),
+  theme(legend.title=element_blank(), legend.text= element_text(size=10),
   plot.title = element_text(size=14), axis.title=element_text(size=12))
 
 print(pl)
