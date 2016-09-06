@@ -9,3 +9,6 @@ Description: Generate shifted density, probability, quantile and random
 License: public
 LazyData: TRUE
 RoxygenNote: 5.0.1
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr

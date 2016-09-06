@@ -39,7 +39,7 @@ Perform Random generation for a shifted distribution
 \examples{
 
 # Binomial Distribution
-rb <- rshift("binom", set_seed =F)
+rb <- rshift("binom")
 set.seed(1)
 zero_shift <- rb(n = 10000, size = 6, prob = 0.5, shift = 0)
 zero_shift
