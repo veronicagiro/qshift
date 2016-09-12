@@ -22,7 +22,7 @@ rsnorm <- rshift("norm")
 #############################
 # prima tronco e poi shifto #
 #############################
-a <- dnorm(x = 1:10, mean = 5, sd = 3)  
+a <- dnorm(x = 1:10, mean = 5, sd = 3)
 dtnorm <- dtruncate("norm")
 b <- dtnorm(x = 1:10, mean = 5, sd = 3, L = 2, U = 8)
 
@@ -32,7 +32,7 @@ c <- dtsnorm(x = 1:10, mean = 5, sd = 3, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
   geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -50,7 +50,7 @@ c <- dtsnorm(x = 1:10, mean = 5, sd = 3, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
   geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -63,7 +63,7 @@ pl
 #############################
 # prima tronco e poi shifto #
 #############################
-a <- pnorm(q = 1:10, mean = 5, sd = 3)  
+a <- pnorm(q = 1:10, mean = 5, sd = 3)
 ptnorm <- ptruncate("norm")
 b <- ptnorm(q = 1:10, mean = 5, sd = 3, L = 2, U = 8)
 
@@ -73,7 +73,7 @@ c <- ptsnorm(q = 1:10, mean = 5, sd = 3, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
   geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -92,7 +92,7 @@ c <- ptsnorm(q = 1:10, mean = 5, sd = 3, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
   geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -105,7 +105,7 @@ pl
 #############################
 # prima tronco e poi shifto #
 #############################
-a <- qnorm(p = (1:999)/1000, mean = 5, sd = 3)  
+a <- qnorm(p = (1:999)/1000, mean = 5, sd = 3)
 qtnorm <- qtruncate("norm")
 b <- qtnorm(p = (1:999)/1000, mean = 5, sd = 3, L = 2, U = 8)
 
@@ -115,7 +115,7 @@ c <- qtsnorm(p = (1:999)/1000, mean = 5, sd = 3, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:999, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
   geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -134,7 +134,7 @@ c <- qtsnorm(p = (1:999)/1000, mean = 5, sd = 3, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:999, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
   geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -147,7 +147,7 @@ pl
 #############################
 # prima tronco e poi shifto #
 #############################
-a <- rnorm(n = 100, mean = 5, sd = 3)  
+a <- rnorm(n = 100, mean = 5, sd = 3)
 rtnorm <- rtruncate("norm")
 b <- rtnorm(n = 100, mean = 5, sd = 3, L = 2, U = 8)
 
@@ -157,7 +157,7 @@ c <- rtsnorm(n = 100, mean = 5, sd = 3, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:100, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
   geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -176,7 +176,7 @@ c <- rtsnorm(n = 100, mean = 5, sd = 3, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:100, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
   geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -202,7 +202,7 @@ rsunif <- rshift("unif")
 #############################
 # prima tronco e poi shifto #
 #############################
-a <- dunif(x = 1:10, min = 1, max = 9)  
+a <- dunif(x = 1:10, min = 1, max = 9)
 dtunif <- dtruncate("unif")
 b <- dtunif(x = 1:10, min = 1, max = 9, L = 2, U = 8)
 
@@ -212,7 +212,7 @@ c <- dtsunif(x = 1:10, min = 1, max = 9, L = 2, U = 8, shift = 3)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
   geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -230,7 +230,7 @@ c <- dtsunif(x = 1:10, min = 1, max = 9, L = 2, U = 8, shift = 2)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
   geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -243,7 +243,7 @@ pl
 #############################
 # prima tronco e poi shifto #
 #############################
-a <- punif(q = 1:10, min = 1, max = 9)  
+a <- punif(q = 1:10, min = 1, max = 9)
 ptunif <- ptruncate("unif")
 b <- ptunif(q = 1:10, min = 1, max = 9, L = 2, U = 8)
 
@@ -253,7 +253,7 @@ c <- ptsunif(q = 1:10, min = 1, max = 9, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
   geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -272,7 +272,7 @@ c <- ptsunif(q = 1:10, min = 1, max = 9, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
   geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -285,7 +285,7 @@ pl
 #############################
 # prima tronco e poi shifto #
 #############################
-a <- qunif(p = (1:999)/1000, min = 1, max = 9)  
+a <- qunif(p = (1:999)/1000, min = 1, max = 9)
 qtunif <- qtruncate("unif")
 b <- qtunif(p = (1:999)/1000, min = 1, max = 9, L = 2, U = 8)
 
@@ -295,7 +295,7 @@ c <- qtsunif(p = (1:999)/1000, min = 1, max = 9, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:999, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
   geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -314,7 +314,7 @@ c <- qtsunif(p = (1:999)/1000, min = 1, max = 9, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:999, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
   geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -327,7 +327,7 @@ pl
 #############################
 # prima tronco e poi shifto #
 #############################
-a <- runif(n = 100, min = 1, max = 9)  
+a <- runif(n = 100, min = 1, max = 9)
 rtunif <- rtruncate("unif")
 b <- rtunif(n = 100, min = 1, max = 9, L = 2, U = 8)
 
@@ -337,7 +337,7 @@ c <- rtsunif(n = 100, min = 1, max = 9, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:100, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
   geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -356,7 +356,7 @@ c <- rtsnorm(n = 100, mean = 5, sd = 3, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:100, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
   geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -385,7 +385,7 @@ rspois <- rshift("pois")
 #############################
 # prima tronco e poi shifto #
 #############################
-a <- dpois(x = 1:10, lambda = 2)  
+a <- dpois(x = 1:10, lambda = 2)
 dtpois <- dtruncate("pois")
 b <- dtpois(x = 1:10, lambda = 2, L = 2, U = 8)
 
@@ -395,7 +395,7 @@ c <- dtspois(x = 1:10, lambda = 2, L = 2, U = 8, shift = 2)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
   geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -413,7 +413,7 @@ c <- dtspois(x = 1:10, lambda = 2, L = 2, U = 8, shift = 2)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
   geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -426,7 +426,7 @@ pl
 #############################
 # prima tronco e poi shifto #
 #############################
-a <- ppois(q = 1:10, lambda = 2)  
+a <- ppois(q = 1:10, lambda = 2)
 
 ptpois <- ptruncate("pois")
 b <- ptpois(q = 1:10, lambda = 2, L = 2, U = 8)
@@ -436,7 +436,7 @@ c <- ptspois(q = 1:10, lambda = 2, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
   geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -455,7 +455,7 @@ c <- ptspois(q = 1:10, lambda = 2, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
   geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -468,7 +468,7 @@ pl
 #############################
 # prima tronco e poi shifto #
 #############################
-a <- qpois(p = (1:999)/1000, lambda = 2)  
+a <- qpois(p = (1:999)/1000, lambda = 2)
 qtpois <- qtruncate("pois")
 b <- qtpois(p = (1:999)/1000, lambda = 2, L = 2, U = 8)
 
@@ -478,7 +478,7 @@ c <- qtspois(p = (1:999)/1000, lambda = 2, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:999, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
   geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -497,7 +497,7 @@ c <- qtspois(p = (1:999)/1000, lambda = 2, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:999, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
   geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -510,7 +510,7 @@ pl
 #############################
 # prima tronco e poi shifto #
 #############################
-a <- rpois(n = 100, lambda = 2)  
+a <- rpois(n = 100, lambda = 2)
 rtpois <- rtruncate("pois")
 b <- rtpois(n = 100, lambda = 2, L = 2, U = 8)
 
@@ -519,7 +519,7 @@ c <- rtspois(n = 100, lambda = 2, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:100, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
   geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -538,7 +538,7 @@ c <- rtspois(n = 100, lambda = 2, shift=2, L = 2, U = 4)
 
 df <- data.frame(a,b,c,d =1:100, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
   geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -567,7 +567,7 @@ rsgamma <- rshift("gamma")
 #############################
 # prima tronco e poi shifto #
 #############################
-a <- dgamma(x = 1:10, shape = 2, rate = 1.5)  
+a <- dgamma(x = 1:10, shape = 2, rate = 1.5)
 dtgamma <- dtruncate("gamma")
 b <- dtgamma(x = 1:10, shape = 2, rate = 1.5, L = 2, U = 8)
 
@@ -577,7 +577,7 @@ c <- dtsgamma(x = 1:10, shape = 2, rate = 1.5, L = 2, U = 8, shift = 2)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
   geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -595,7 +595,7 @@ c <- dtsgamma(x = 1:10, shape = 2, rate = 1.5, L = 4, U = 8, shift = 2)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
   geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -608,7 +608,7 @@ pl
 #############################
 # prima tronco e poi shifto #
 #############################
-a <- pgamma(q = 1:10, shape = 2, rate = 1.5)  
+a <- pgamma(q = 1:10, shape = 2, rate = 1.5)
 
 ptgamma <- ptruncate("gamma")
 b <- ptgamma(q = 1:10, shape = 2, rate = 1.5, L = 2, U = 8)
@@ -618,7 +618,7 @@ c <- ptsgamma(q = 1:10, shape = 2, rate = 1.5, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
   geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -637,7 +637,7 @@ c <- ptsgamma(q = 1:10, shape = 2, rate = 1.5, shift=2, L = 2, U = 3)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
   geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -650,7 +650,7 @@ pl
 #############################
 # prima tronco e poi shifto #
 #############################
-a <- qgamma(p = (1:999)/1000, shape = 2, rate = 1.5)  
+a <- qgamma(p = (1:999)/1000, shape = 2, rate = 1.5)
 qtgamma <- qtruncate("gamma")
 b <- qtgamma(p = (1:999)/1000, shape = 2, rate = 1.5, L = 2, U = 4)
 
@@ -660,7 +660,7 @@ c <- qtsgamma(p = (1:999)/1000, shape = 2, rate = 1.5, shift=2, L = 2, U = 4)
 
 df <- data.frame(a,b,c,d =1:999, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
   geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -679,7 +679,7 @@ c <- qtsgamma(p = (1:999)/1000, shape = 2, rate = 1.5, shift=2, L = 2, U = 5)
 
 df <- data.frame(a,b,c,d =1:999, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
   geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -692,7 +692,7 @@ pl
 #############################
 # prima tronco e poi shifto #
 #############################
-a <- rgamma(n = 100, shape = 2, rate = 1.5)  
+a <- rgamma(n = 100, shape = 2, rate = 1.5)
 rtgamma <- rtruncate("gamma")
 b <- rtgamma(n = 100, shape = 2, rate = 1.5, L = 2, U = 5)
 
@@ -701,7 +701,7 @@ c <- rtsgamma(n = 100, shape = 2, rate = 1.5, shift=2, L = 2, U = 5)
 
 df <- data.frame(a,b,c,d =1:100, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
   geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -720,7 +720,7 @@ c <- rtsgamma(n = 100, shape = 2, rate = 1.5, shift=2, L = 3, U = 4)
 
 df <- data.frame(a,b,c,d =1:100, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
   geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -749,7 +749,7 @@ rschisq <- rshift("chisq")
 #############################
 # prima tronco e poi shifto #
 #############################
-a <- dchisq(x = 1:10, df = 4)  
+a <- dchisq(x = 1:10, df = 4)
 dtchisq <- dtruncate("chisq")
 b <- dtchisq(x = 1:10, df = 4, L = 2, U = 8)
 
@@ -758,7 +758,7 @@ c <- dtschisq(x = 1:10, df = 4, L = 2, U = 8, shift = 2)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
   geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -776,7 +776,7 @@ c <- dtschisq(x = 1:10, df = 4, L = 4, U = 8, shift = 2)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
   geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -789,7 +789,7 @@ pl
 #############################
 # prima tronco e poi shifto #
 #############################
-a <- pchisq(q = 1:10, df = 4)  
+a <- pchisq(q = 1:10, df = 4)
 
 ptchisq <- ptruncate("chisq")
 b <- ptchisq(q = 1:10, df = 4, L = 2, U = 8)
@@ -799,7 +799,7 @@ c <- ptschisq(q = 1:10, df = 4, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
   geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -818,7 +818,7 @@ c <- ptschisq(q = 1:10, df = 4, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
   geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -831,7 +831,7 @@ pl
 #############################
 # prima tronco e poi shifto #
 #############################
-a <- qchisq(p = (1:999)/1000, df = 4)  
+a <- qchisq(p = (1:999)/1000, df = 4)
 qtchisq <- qtruncate("chisq")
 b <- qtchisq(p = (1:999)/1000, df = 4, L = 2, U = 8)
 
@@ -841,7 +841,7 @@ c <- qtschisq(p = (1:999)/1000, df = 4, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:999, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
   geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -860,7 +860,7 @@ c <- qtschisq(p = (1:999)/1000, df = 4, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:999, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
   geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -873,7 +873,7 @@ pl
 #############################
 # prima tronco e poi shifto #
 #############################
-a <- rchisq(n = 100, df = 4)  
+a <- rchisq(n = 100, df = 4)
 rtchisq <- rtruncate("chisq")
 b <- rtchisq(n = 100, df = 4, L = 2, U = 5)
 
@@ -882,7 +882,7 @@ c <- rtschisq(n = 100, df = 4, shift=4, L = 2, U = 5)
 
 df <- data.frame(a,b,c,d =1:100, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
   geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -901,7 +901,7 @@ c <- rtschisq(n = 100, df = 4, shift=4, L = 5, U = 10)
 
 df <- data.frame(a,b,c,d =1:100, stringsAsFactors = F)
 
-pl <- ggplot() + 
+pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
   geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
@@ -911,10 +911,256 @@ pl
 ###################################################################################
 
 
+###################################################################################
+
+# Weibull
+
+dtweibull <- dtruncate("weibull")
+ptweibull <- ptruncate("weibull")
+qtweibull <- qtruncate("weibull")
+rtweibull <- rtruncate("weibull")
+
+dsweibull <- dshift("weibull")
+psweibull <- pshift("weibull")
+qsweibull <- qshift("weibull")
+rsweibull <- rshift("weibull")
+
+############# d ################
+
+#############################
+# prima tronco e poi shifto #
+#############################
+
+a <- dweibull(x = 1:10, shape = 0.5, scale = 1.5)
+dtweibull <- dtruncate("weibull")
+b <- dtweibull(x = 1:10, shape = 0.5, scale = 1.5, L = 2, U = 8)
+
+dtsweibull <- dshift("tweibull")
+c <- dtsweibull(x = 1:10, shape = 0.5, scale = 1.5, L = 2, U = 8, shift = 2)
+
+df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
+
+pl <- ggplot() +
+  geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
+  geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
+  geom_line(data = df, mapping = aes(y=c, x=d), col="green")
+
+pl
+#############################
+# prima shifto e poi tronco #
+#############################
+
+dsweibull <- dshift("weibull")
+b <- dsweibull(x = 1:10, shape = 0.5, scale = 1.5, shift=2)
+
+dtsweibull <- dtruncate("sweibull")
+c <- dtsweibull(x = 1:10, shape = 0.5, scale = 1.5, L = 2, U = 8, shift = 2)
+
+df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
+
+pl <- ggplot() +
+  geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
+  geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
+  geom_line(data = df, mapping = aes(y=c, x=d), col="green")
+
+pl
 
 
+############# p ################
+
+#############################
+# prima tronco e poi shifto #
+#############################
+a <- pweibull(q = 1:10, shape = 0.5, scale = 1.5)
+
+ptweibull <- ptruncate("weibull")
+b <- ptweibull(q = 1:10, shape = 0.5, scale = 1.5, L = 2, U = 8)
+
+ptsweibull <- pshift("tweibull")
+c <- ptsweibull(q = 1:10, shape = 0.5, scale = 1.5, shift=2, L = 2, U = 8)
+
+df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
+
+pl <- ggplot() +
+  geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
+  geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
+  geom_line(data = df, mapping = aes(y=c, x=d), col="green")
+
+pl
+
+#############################
+# prima shifto e poi tronco #
+#############################
+
+psweibull <- pshift("weibull")
+b <- psweibull(q = 1:10, shape = 0.5, scale = 1.5, shift=2)
+
+ptsweibull <- ptruncate("sweibull")
+c <- ptsweibull(q = 1:10, shape = 0.5, scale = 1.5, shift=2, L = 2, U = 6)
+
+df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
+
+pl <- ggplot() +
+  geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
+  geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
+  geom_line(data = df, mapping = aes(y=c, x=d), col="green")
+
+pl
 
 
+############# q ################
+
+#############################
+# prima tronco e poi shifto #
+#############################
+a <- qweibull(p = (1:999)/1000, shape = 0.5, scale = 1.5)
+qtweibull <- qtruncate("weibull")
+b <- qtweibull(p = (1:999)/1000, shape = 0.5, scale = 1.5, L = 2, U = 8)
+
+qtsweibull <- qshift("tweibull")
+c <- qtsweibull(p = (1:999)/1000, shape = 0.5, scale = 1.5, shift=2, L = 2, U = 8)
+
+df <- data.frame(a,b,c,d =1:999, stringsAsFactors = F)
+
+pl <- ggplot() +
+  geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
+  geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
+  geom_line(data = df, mapping = aes(y=c, x=d), col="green")
+
+pl
+
+#############################
+# prima shifto e poi tronco #
+#############################
+
+qsweibull <- qshift("weibull")
+b <- qsweibull(p = (1:999)/1000, shape = 0.5, scale = 1.5, shift=2)
+
+qtsweibull <- qtruncate("sweibull")
+c <- qtsweibull(p = (1:999)/1000, shape = 0.5, scale = 1.5, shift = 2, L = 2, U = 8)
+
+df <- data.frame(a,b,c,d =1:999, stringsAsFactors = F)
+
+pl <- ggplot() +
+  geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
+  geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
+  geom_line(data = df, mapping = aes(y=c, x=d), col="green")
+
+pl
+
+
+############# r ################
+
+#############################
+# prima tronco e poi shifto #
+#############################
+a <- rweibull(n = 100, shape = 0.5, scale = 1.5)
+rtweibull <- rtruncate("weibull")
+b <- rtweibull(n = 100, shape = 0.5, scale = 1.5, L = 2, U = 5)
+
+rtsweibull <- rshift("tweibull")
+c <- rtsweibull(n = 100, shape = 0.5, scale = 1.5, shift=4, L = 2, U = 5)
+
+df <- data.frame(a,b,c,d =1:100, stringsAsFactors = F)
+
+pl <- ggplot() +
+  geom_line(data = df, mapping = aes(y=a, x=d), col="blue")+
+  geom_line(data = df, mapping = aes(y=b, x=d), col="red")+
+  geom_line(data = df, mapping = aes(y=c, x=d), col="green")
+
+pl
+
+#############################
+# prima shifto e poi tronco #
+#############################
+
+rsweibull <- rshift("weibull")
+b <- rsweibull(n = 100, shape = 0.5, scale = 1.5, shift=4)
+
+rtsweibull <- rtruncate("sweibull")
+c <- rtsweibull(n = 100, shape = 0.5, scale = 1.5, shift=4, L = 5, U = 10)
+
+df <- data.frame(a,b,c,d =1:100, stringsAsFactors = F)
+
+pl <- ggplot() +
+  geom_line(data = df, mapping = aes(y=a, x=d), col="blue") +
+  geom_line(data = df, mapping = aes(y=b, x=d), col="red") +
+  geom_line(data = df, mapping = aes(y=c, x=d), col="green")
+
+pl
+
+###################################################################################
+
+# prova ottimizzazione  --> ok
+
+### shiftata troncata
+
+dsweibull <- dshift("weibull")
+dtsweibull <- dtruncate("sweibull")
+
+ltweibull <- function(x, L = -Inf, U = Inf){
+  # starting values for parameters (scale, shape) and shift
+  shift <- min(x) - 0.01
+  x1 <- x - shift
+  shape <- (sd(x1)/mean(x1))^(-1.086)
+  scale <- mean(x1)/gamma(1+1/shape)
+  # parameters vector definition
+  theta <- c(shape, scale, shift)
+  # likelihood function
+  ll <- function(theta, x, L = -Inf, U = Inf){
+    shape <- theta[1]
+    scale <- theta[2]
+    shift <- theta[3]
+    ld <- dtsweibull(x = x, shape = shape, scale = scale, shift = shift, L = L, U = U, log = TRUE)
+    -sum(ld)
+  }
+  # maximum likelihood estimation
+  optim(par = theta, fn = ll, x = x, L = L, U = U, method = "Nelder-Mead")[["par"]]
+}
+
+
+rsweibull <- rshift("weibull")
+rtsweibull <- rtruncate("sweibull")
+x <- rtsweibull(n = 100000, shape = 1, scale = 5, shift = 1, L = 1, U = 1000)
+
+# maximum likelihood estimate for the shifted weibull distribution
+ltweibull(x = x, L = 1, U = 10000)
+
+##############################################################################
+
+### troncata shiftata -> non funziona
+
+dtweibull <- dtruncate("weibull")
+dstweibull <- dshift("tweibull")
+
+
+ltweibull <- function(x, L = -Inf, U = Inf){
+  # starting values for parameters (scale, shape) and shift
+  shift <- min(x) - 0.01
+  x1 <- x - shift
+  shape <- (sd(x1)/mean(x1))^(-1.086)
+  scale <- mean(x1)/gamma(1+1/shape)
+  # parameters vector definition
+  theta <- c(shape, scale, shift)
+  # likelihood function
+  ll <- function(theta, x, L = -Inf, U = Inf){
+    shape <- theta[1]
+    scale <- theta[2]
+    shift <- theta[3]
+    ld <- dstweibull(x = x, shape = shape, scale = scale, shift = shift, L = L, U = U, log = TRUE)
+    -sum(ld)
+  }
+  # maximum likelihood estimation
+  optim(par = theta, fn = ll, x = x, L = L, U = U, method = "Nelder-Mead")[["par"]]
+}
+
+
+rtweibull <- rtruncate("weibull")
+rstweibull <- rshift("tweibull")
+x <- rstweibull(n = 100000, shape = 1, scale = 5, shift = 1, L = 1, U = 10000)
+
+# maximum likelihood estimate for the shifted weibull distribution
+ltweibull(x = x, L = 1, U = 10000)
 
 
 
