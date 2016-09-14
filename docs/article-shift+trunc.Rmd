@@ -88,17 +88,14 @@ args(pnorm)
 args(tpnorm)
 ```
 
+For more details and examples about `qdist` and `qshift` see articles "R package qdist: A functional programming approach to truncated probability ditributions" and "R package qshift: A functional programming approach to shifted probability distributions" available on [Quantide blog](http://www.quantide.com/blog/).
 
 # Distribution function for truncated and shifted or for shifted and truncated distributions
 
-Functional programming approach used to built the packages is the key that allows to obtain distribution functions for truncated and shifted or for shifted and truncated distributions.
+In the previous paragraph we saw how `qdist` and `qshift` packages works and that they are built with a functional programming approach. The functional programming approach whereby the packages are built is the key that allows to obtain distribution functions for truncated and shifted or for shifted and truncated distributions. Let us see how!
 
-Let us consider the previously defined functions for truncated and shifted distributions functions.  
-
-Suppose we want to generate the probability functions for truncated shifted normal distributions.
-
-As `pnorm()` is the function that computes the distribution function for a normal distributions, named `norm`, `ptnorm()`, defined as 
-
+Suppose we want to generate the probability functions for a truncated shifted normal distribution.  
+As `pnorm()` is the function that computes the distribution function for a normal distributions, conventionally named `norm`, `ptnorm()`, defined as: 
 ```{r}
 ptnorm <- ptruncate("norm")
 ```
@@ -111,7 +108,7 @@ So for computing the distribution function of a shifted trucated normal distribu
 pstnorm <- pshift("tnorm")
 ```
 
-So `pstnorm()` is the function that computes the distribution function of `stnorm` shifted truncated normal distribution.
+So `pstnorm()` is the function that computes the distribution function of `stnorm`, the shifted truncated normal distribution.
 
 ```{r}
 args(pstnorm)
@@ -119,7 +116,7 @@ args(pstnorm)
 
 Looking at the function arguments we see that the sintax style is that of `pnorm()` function plus `L` and `U` arguments for truncated distribution and `shift` argument for shifted distribution.
 
-The inverse procedure are necessary to generate the distribution function for a truncated shifted distribution.
+The inverse procedure are necessary to generate the distribution function for a shifted truncated distribution.
 
 Starting from `pshift` we define:
 
@@ -127,9 +124,8 @@ Starting from `pshift` we define:
 psnorm <- pshift("norm")
 ```
 
-`psnorm()` is the distrinìbution function of `snorm` shifted normal distribution.
-
-So for computing the distribution function of a trucated shifted normal distribution we have to pass `snorm` distribution as `ptruncate()` argument:
+`psnorm()` is the distribution function of `snorm`, a shifted normal distribution.
+The distribution function of a truncated shifted normal distribution is generated passing `snorm` distribution as `ptruncate()` argument:
 
 ```{r}
 ptsnorm <- ptruncate("snorm")
