@@ -9,6 +9,8 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Introduction
+
 R programming functional nature allows us programmer to implement and manipulate functions as we need. Functional programming is a style of programming that emphasizes the evaluation of expressions rather than the execution of commands. It has a great power and lots of properties that combined together can allows us to produce results with the most efficient computational method. In this article we will consider the functional factory method proposed by Andrea Spanò in "R package qdist: A functional programming approach to truncated probability ditributions", and used by Veronica Giro in "R package qshift: A functional programming approach to shifted probability distributions", that produces functions for truncated and shifted distributions, respectively. [`qdist`](https://github.com/andreaspano/qdist) and [`qshift`](https://github.com/veronicagiro/qshift) packages are available on Github. We will demonstrate that it is possible to produce functions for truncated and shifted or shifted and truncated distributions only combining the two packages. 
 
 # Functional programming as a new approach for computing distribution functions 
@@ -20,34 +22,37 @@ R provides probability, density, quantile and random number generator functions 
 * quantile functions q<dist>(p) with p vector of probabilities;
 * random number generation r<dist>(n) with n number of observations.
 
-where <dist> indicates the distribution family.
+where <dist> indicates the distribution family.  
 
 As a result we have: pnorm(q), dnorm(x), qnorm(p) and rnorm(n) for normal distribution and similarly for all other distributions. 
 
-Starting from this well structured syntax, Andrea Spanò proposed a functional programming method that computes truncated distributions functions for each distribution chosen without changing the programming style and syntax of previous functions. 
+Starting from this well structured syntax, Andrea Spanò proposed, in `qdist`, a functional programming method that computes truncated distributions functions for each distribution chosen without changing the programming style and syntax of previous functions. 
 
-The methodology is based in two steps:
+The methodology is based on two R key concepts:    
 
-* define the required functions suitable for computing from specific truncated probability models by using the tools available within its package: 
+* the environment of a function can be used as a placeholder for other objects;
+* function formals can be manipulated.
+
+and develops in two steps:
+
+* define the required functions suitable for computing from specific truncated probability models by using the functions available within its package. These functions take as input a probability distribution as a character string, in this case the normal distribution, and return the equivalent truncated distribution as a function object.
 
 ```{r}
 #devtools::install_github("andreaspano/qdist", build=FALSE)
 require(qdist)
-tpnorm <- ptruncate("norm") 
-tdnorm <- dtruncate("norm")
-tqnorm <- qtruncate("norm")
-trnorm <- rtruncate("norm")
+tpnorm <- ptruncate("norm") # probability function 
+tdnorm <- dtruncate("norm") # density function
+tqnorm <- qtruncate("norm") # quantile function
+trnorm <- rtruncate("norm") # random generation function
 ```
-    These functions take as input a probability distribution as a character string, in this case the normal distribution, and
-return the equivalent truncated distribution as a function object.
     
-* use the newly created functions for computing from truncated probability models.
+* use the newly created functions (`tpnorm()`, `tdnorm()`, `tqnorm()`, `trnorm()`) for computing from truncated probability models.
 
 ```{r}
 q <- seq(6, 14, len = 100)
 ptnorm(q, mean = 10, sd = 1, L = 9, U = 11)
 ```
-    we use function tpnorm() to compute the distribution function of a normal distribution with mean 10 and standard deviation 1, truncated in 9 and 11.
+    In this example we use function `tpnorm()` to compute the distribution function of a normal distribution with mean 10 and standard deviation 1, truncated in 9 and 11.
 
 The newly generated function `ptnorm()` has the same formals as the original `pnorm()`, plus two extra parameters: `L` and `U`, respectively for lower and upper truncation thresholds set by default to `-Inf` and `+Inf`:
 
@@ -56,13 +61,84 @@ args(pnorm)
 args(tpnorm)
 ```
 
+`qshift` package share the same logic and the same methodology. The difference is that the functions are designed for shifted distributions.     
+
+Also in this case, the methodology develops in two steps:
+
+* define the required functions suitable for computing from specific shifted probability models by using the tools available within its package. These functions take as input a probability distribution as a character string, in this case the normal distribution, and return the equivalent truncated distribution as a function object.
+
+```{r}
+require(qshift)
+dsnorm <- dshift("norm") # density function
+psnorm <- pshift("norm") # probability function
+qsnorm <- qshift("norm") # quantile function
+rsnorm <- rshift("norm") # random generation function
+```
+
+* se the newly created functions (`tsnorm()`, `tsnorm()`, `tsnorm()`, `tsnorm()`) for computing from truncated probability models.
+```{r}
+x <- seq(4, 14, len = 100)
+positive_shifted <- psnorm(q = x, mean = 8, sd = 1.5, shift = 1)
+```
+
+The newly generated function `psnorm()` has the same formals as the original `pnorm()`, plus one extra parameter: `shift`, set by default to 0:
+
+```{r}
+args(pnorm)
+args(tpnorm)
+```
+
+
+# Distribution function for truncated and shifted or for shifted and truncated distributions
+
+Functional programming approach used to built the packages is the key that allows to obtain distribution functions for truncated and shifted or for shifted and truncated distributions.
+
+Let us consider the previously defined functions for truncated and shifted distributions functions.  
+
+Suppose we want to generate the probability functions for truncated shifted normal distributions.
+
+As `pnorm()` is the function that computes the distribution function for a normal distributions, named `norm`, `ptnorm()`, defined as 
+
+```{r}
+ptnorm <- ptruncate("norm")
+```
+
+is the function that computes the distribution function for a truncated normal distributions, named `tnorm`. 
+
+So for computing the distribution function of a shifted trucated normal distribution we have to pass `tnorm` distribution as `pshift()` argument:
+
+```{r}
+pstnorm <- pshift("tnorm")
+```
+
+So `pstnorm()` is the function that computes the distribution function of `stnorm` shifted truncated normal distribution.
+
+```{r}
+args(pstnorm)
+```
+
+Looking at the function arguments we see that the sintax style is that of `pnorm()` function plus `L` and `U` arguments for truncated distribution and `shift` argument for shifted distribution.
+
+The inverse procedure are necessary to generate the distribution function for a truncated shifted distribution.
+
+Starting from `pshift` we define:
+
+```{r}
+psnorm <- pshift("norm")
+```
+
+`psnorm()` is the distrinìbution function of `snorm` shifted normal distribution.
+
+So for computing the distribution function of a trucated shifted normal distribution we have to pass `snorm` distribution as `ptruncate()` argument:
+
+```{r}
+ptsnorm <- ptruncate("snorm")
+```
+
+So `ptsnorm()` is the function that computes the distribution function of `stnorm` truncated shifted normal distribution.
 
 
 
-This article will explain an alternative computational method based on function factory and on two R key concepts:    
-
-• the environment of a function can be used as a placeholder for other objects;
-• function formals can be manipulated.
 
 
 
