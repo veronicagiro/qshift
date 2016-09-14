@@ -26,12 +26,12 @@ Let us sum up the alternative functional programming approach used for developin
 
 R provides probability, density, quantile and random number generator functions in `stats` package, using a stable naming convention both for the names of the functions and in the first argument of these functions:
 
-* probability distribution functions p<dist>(q) with q vector of quantiles;
-* density functions d<dist>(x) with x vector of quantiles;
-* quantile functions q<dist>(p) with p vector of probabilities;
-* random number generation r<dist>(n) with n number of observations.
+* probability distribution functions p< dist >(q) with q vector of quantiles;
+* density functions d< dist >(x) with x vector of quantiles;
+* quantile functions q< dist >(p) with p vector of probabilities;
+* random number generation r< dist >(n) with n number of observations.
 
-where <dist> indicates the distribution family.  
+where < dist > indicates the distribution family.  
 
 As a result we have: pnorm(q), dnorm(x), qnorm(p) and rnorm(n) for normal distribution and similarly for all other distributions. 
 
@@ -65,7 +65,7 @@ args(dtnorm)
 
 Let us see graphically the differences between `dnorm()` to compute the density function of a normal distribution with mean 10 and standard deviation 1 and `tdnorm()` to compute the density function of a normal distribution with mean 10 and standard deviation 1 lower truncated at 9 and upper truncated at 11:
 
-```{r}
+```{r, message=FALSE}
 x <- seq(6, 14, len = 100)
 std_density <- dnorm(x = x, mean = 10, sd = 1)
 trunc_density <- dtnorm(x = x, mean = 10, sd = 1, L = 9, U = 11)
@@ -110,7 +110,7 @@ Let us consider `dsnorm()`. Also this function has the same formals as the origi
 
 ```{r}
 args(dnorm)
-args(dtnorm)
+args(dsnorm)
 ```
 
 Let us see graphically the differences between `dnorm()` to compute the density function of a normal distribution with mean 10 and standard deviation 1 and `sdnorm()` to compute the density function of a normal distribution with mean 10 and standard deviation 1 shifted of one unit:
@@ -141,7 +141,7 @@ print(pl)
 
 For more details and examples about how `qdist` and `qshift` works, see articles "R package qdist: A functional programming approach to truncated probability ditributions" and "R package qshift: A functional programming approach to shifted probability distributions" available on [Quantide blog](http://www.quantide.com/blog/).
 
-# Distribution function for truncated and shifted or for shifted and truncated distributions
+# Distribution functions for truncated and shifted or for shifted and truncated distributions
 
 The functional programming approach whereby `qdist` and `qshift` packages are built is the key that allows to obtain distribution functions for truncated and shifted or for shifted and truncated distributions. Let us see how!
 
@@ -153,7 +153,7 @@ dtnorm <- dtruncate("norm")
 
 is the function that computes the density function for a truncated normal distributions, named `tnorm`.
 
-We have to define also the others functions for truncated distribution, as they are necessary for the further step:
+We have to define also the others functions for truncated distribution, as they are necessary implicitly for the further step:
 
 ```{r}
 ptnorm <- ptruncate("norm")
@@ -182,7 +182,7 @@ Starting from `dshift`, we define `dsnorm()`, the density function of `snorm`, w
 dsnorm <- dshift("norm")
 ```
 
-We have to define also the others functions for shifted distribution, as they are necessary for the further step:
+We have to define also the others functions for shifted distribution, as they are implicitly necessary for the further step:
 
 ```{r}
 psnorm <- pshift("norm")
@@ -195,7 +195,7 @@ The density function of a truncated shifted normal distribution is generated pas
 dtsnorm <- dtruncate("snorm")
 ```
 
-So `ptsnorm()` is the function that computes the density function of `stnorm`, which is the truncated shifted normal distribution.
+So `dtsnorm()` is the function that computes the density function of `stnorm`, which is the truncated shifted normal distribution.
 
 Let us see graphically the differences between the density function of normal distribution, of a shifted truncated normal distribution and of a truncated shifted normal distribution.
 
@@ -226,4 +226,125 @@ pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=type)) +
 print(pl)
 ```
 
-We can conclude that the previous functiona are completely different.
+We can conclude that the previous functions are completely different.
+
+Let us analyze the other distributions functions:
+
+* probability distribution function of truncated-shifted normal distribution and of shifted-truncated normal distribution:
+
+```{r}
+pstnorm <- pshift("tnorm")
+ptsnorm <- ptruncate("snorm")
+std_distr <- pnorm(q = x, mean = 10, sd = 1)
+st_distr <- pstnorm(q = x, mean = 10, sd = 1, L = 9, U = 11, shift = 1)
+ts_distr <- ptsnorm(q = x, mean = 10, sd = 1, L = 9, U = 11, shift = 1)
+```
+
+```{r}
+df <- data.frame(x=x, 
+                 type = factor(c(rep("std_distr", times=length(x)),
+                    rep("st_distr", times=length(x)),
+                    rep("ts_distr", times=length(x))),
+                    levels = c("std_distr", "st_distr", "ts_distr")), 
+                  value = c(std_distr, st_distr, ts_distr))
+
+pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=type)) +
+  geom_line(size=1) +
+  scale_color_manual(values = c("std_distr" = "cyan3", 
+                                "st_distr" = "#89FF99", 
+                                "ts_distr" = "#FF89B4")) +
+  xlab("Value") + ylab("Density") +
+  ggtitle("Distribution plot for transformed and not-transformed Normal distributions") +
+  theme(legend.title=element_blank(), legend.text= element_text(size=10),
+  plot.title = element_text(size=14), axis.title=element_text(size=12))
+
+print(pl)
+```
+
+
+* quantile function of truncated-shifted normal distribution and of shifted-truncated normal distribution:
+
+```{r}
+qstnorm <- qshift("tnorm")
+qtsnorm <- qtruncate("snorm")
+x <- 1:999/1000
+std_quant <- qnorm(p = x, mean = 10, sd = 1)
+st_quant <- qstnorm(p = x, mean = 10, sd = 1, L = 9, U = 11, shift = 1)
+ts_quant <- qtsnorm(p = x, mean = 10, sd = 1, L = 9, U = 11, shift = 1)
+```
+
+```{r}
+df <- data.frame(x=x, 
+                 type = factor(c(rep("std_quant", times=length(x)),
+                    rep("st_quant", times=length(x)),
+                    rep("ts_quant", times=length(x))),
+                    levels = c("std_quant", "st_quant", "ts_quant")), 
+                  value = c(std_quant, st_quant, ts_quant))
+
+pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=type)) +
+  geom_line(size=1) +
+  scale_color_manual(values = c("std_quant" = "cyan3", 
+                                "st_quant" = "#89FF99", 
+                                "ts_quant" = "#FF89B4")) +
+  xlab("Value") + ylab("Density") +
+  ggtitle("Distribution plot for transformed and not-transformed Normal distributions") +
+  theme(legend.title=element_blank(), legend.text= element_text(size=10),
+  plot.title = element_text(size=14), axis.title=element_text(size=12))
+
+print(pl)
+```
+
+* random generation function of truncated-shifted normal distribution and of shifted-truncated normal distribution:
+
+```{r}
+rstnorm <- rshift("tnorm")
+rtsnorm <- rtruncate("snorm")
+std_rand <- rnorm(n=1000, mean = 10, sd = 1)
+st_rand <- rstnorm(n=1000, mean = 10, sd = 1, L = 9, U = 11, shift = 1)
+ts_rand <- rtsnorm(n=1000, mean = 10, sd = 1, L = 9, U = 11, shift = 1)
+```
+
+```{r}
+df <- data.frame(x=1:1000, 
+                 type = factor(c(rep("std_rand", times=1000),
+                    rep("st_rand", times=1000),
+                    rep("ts_rand", times=1000)),
+                    levels = c("std_rand", "st_rand", "ts_rand")), 
+                  value = c(std_rand, st_rand, ts_rand))
+
+pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=type)) +
+  geom_line(size=1) +
+  scale_color_manual(values = c("std_rand" = "cyan3", 
+                                "st_rand" = "#89FF99", 
+                                "ts_rand" = "#FF89B4")) +
+  xlab("Value") + ylab("Density") +
+  ggtitle("Distribution plot for transformed and not-transformed Normal distributions") +
+  theme(legend.title=element_blank(), legend.text= element_text(size=10),
+  plot.title = element_text(size=14), axis.title=element_text(size=12))
+
+print(pl)
+```
+
+<!--
+pensare ad un modo diverso per spiegare la cosa perchè da questi grafici nn si capisce niente
+-->
+## Other Examples
+
+Let us see how it the other distribution functions works with other distributions.
+
+Let us consider Poisson distribution and distribution function.
+
+First of all functions for truncated distribution and for shifted distributio have to be defined:
+
+```{r}
+dtpois <- dtruncate("pois")
+ptpois <- ptruncate("pois")
+qtpois <- qtruncate("pois")
+rtpois <- rtruncate("pois")
+
+dspois <- dshift("pois")
+pspois <- pshift("pois")
+qspois <- qshift("pois")
+rspois <- rshift("pois")
+```
+

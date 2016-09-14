@@ -46,6 +46,7 @@ dsnorm <- dshift("norm")
 b <- dsnorm(x = 1:10, mean = 5, sd = 3, shift=2)
 
 dtsnorm <- dtruncate("snorm")
+ptsnorm <- ptruncate("snorm")
 c <- dtsnorm(x = 1:10, mean = 5, sd = 3, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
@@ -70,6 +71,7 @@ b <- ptnorm(q = 1:10, mean = 5, sd = 3, L = 2, U = 8)
 ptsnorm <- pshift("tnorm")
 
 c <- ptsnorm(q = 1:10, mean = 5, sd = 3, shift=2, L = 2, U = 8)
+c <- qtsnorm(p = c(0.0000000, 0.0000000, 0.0000000, 0.0000000, 0.1374524, 0.3087584, 0.5000000, 0.6912416, 0.8625476, 1.0000000), mean = 5, sd = 3, shift=2, L = 2, U = 8)
 
 df <- data.frame(a,b,c,d =1:10, stringsAsFactors = F)
 
@@ -121,6 +123,29 @@ pl <- ggplot() +
   geom_line(data = df, mapping = aes(y=c, x=d), col="green")
 
 pl
+
+###############################
+# prove da p a q e viceversa  #
+###############################
+
+# tronco poi shifto
+a <- qtsnorm(p = (1:9)/10, mean = 5, sd = 3, shift=2, L = 2, U = 8)
+ptsnorm(q = a, mean = 5, sd = 3, shift=2, L = 2, U = 8)
+# giusto
+
+a <- ptsnorm(q = 1:10, mean = 5, sd = 3, shift=2, L = 2, U = 8)
+qtsnorm(p = a, mean = 5, sd = 3, shift=2, L = 2, U = 8)
+
+# shifto poi tronco
+c <- qtsnorm(p = 1:9/10, mean = 5, sd = 3, shift=2, L = 2, U = 8)
+ptsnorm(q = c, mean = 5, sd = 3, shift=2, L = 2, U = 8)
+
+
+c <- ptsnorm(q = 1:10, mean = 5, sd = 3, shift=2, L = 2, U = 8)
+qtsnorm(p = c, mean = 5, sd = 3, shift=2, L = 2, U = 8)
+
+
+# da q a p è sempre giusto, da p a q no
 
 #############################
 # prima shifto e poi tronco #
@@ -1096,6 +1121,8 @@ pl
 ### shiftata troncata
 
 dsweibull <- dshift("weibull")
+psweibull <- pshift("weibull")
+qsweibull <- qshift("weibull")
 dtsweibull <- dtruncate("sweibull")
 
 ltweibull <- function(x, L = -Inf, U = Inf){
@@ -1121,10 +1148,10 @@ ltweibull <- function(x, L = -Inf, U = Inf){
 
 rsweibull <- rshift("weibull")
 rtsweibull <- rtruncate("sweibull")
-x <- rtsweibull(n = 100000, shape = 1, scale = 5, shift = 1, L = 1, U = 1000)
+x <- rtsweibull(n = 100000, shape = 1, scale = 2, shift = 1, L = 5, U = 10)
 
 # maximum likelihood estimate for the shifted weibull distribution
-ltweibull(x = x, L = 1, U = 10000)
+ltweibull(x = x, L = 5, U = 10)
 
 ##############################################################################
 
@@ -1134,19 +1161,20 @@ dtweibull <- dtruncate("weibull")
 dstweibull <- dshift("tweibull")
 
 
-ltweibull <- function(x, L = -Inf, U = Inf){
+ltweibull <- function(x, shift = 0 ,L = -Inf, U = Inf){
   # starting values for parameters (scale, shape) and shift
-  shift <- min(x) - 0.01
+  #shift <- min(x) - 0.01
   x1 <- x - shift
   shape <- (sd(x1)/mean(x1))^(-1.086)
   scale <- mean(x1)/gamma(1+1/shape)
   # parameters vector definition
-  theta <- c(shape, scale, shift)
+  #theta <- c(shape, scale, shift)
+  theta <- c(shape, scale)
   # likelihood function
-  ll <- function(theta, x, L = -Inf, U = Inf){
+  ll <- function(theta, x, shift = 0, L = -Inf, U = Inf){
     shape <- theta[1]
     scale <- theta[2]
-    shift <- theta[3]
+    #shift <- theta[3]
     ld <- dstweibull(x = x, shape = shape, scale = scale, shift = shift, L = L, U = U, log = TRUE)
     -sum(ld)
   }
@@ -1158,9 +1186,9 @@ ltweibull <- function(x, L = -Inf, U = Inf){
 rtweibull <- rtruncate("weibull")
 rstweibull <- rshift("tweibull")
 x <- rstweibull(n = 100000, shape = 1, scale = 5, shift = 1, L = 1, U = 10000)
-
+x <- rstweibull(n = 100000, shape = 1, scale = 5, L = 1)
 # maximum likelihood estimate for the shifted weibull distribution
-ltweibull(x = x, L = 1, U = 10000)
+ltweibull(x = x, L = 1)
 
 
 
