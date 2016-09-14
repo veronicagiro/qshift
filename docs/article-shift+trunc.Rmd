@@ -11,9 +11,18 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introduction
 
-R programming functional nature allows us programmer to implement and manipulate functions as we need. Functional programming is a style of programming that emphasizes the evaluation of expressions rather than the execution of commands. It has a great power and lots of properties that combined together can allows us to produce results with the most efficient computational method. In this article we will consider the functional factory method proposed by Andrea Spanò in "R package qdist: A functional programming approach to truncated probability ditributions", and used by Veronica Giro in "R package qshift: A functional programming approach to shifted probability distributions", that produces functions for truncated and shifted distributions, respectively. [`qdist`](https://github.com/andreaspano/qdist) and [`qshift`](https://github.com/veronicagiro/qshift) packages are available on Github. We will demonstrate that it is possible to produce functions for truncated and shifted or shifted and truncated distributions only combining the two packages. 
+R programming functional nature allows us programmer to implement and manipulate functions as we need. Functional programming is a style of programming that emphasizes the evaluation of expressions rather than the execution of commands. It has a great power and lots of properties that combined together can allows us to produce results with the most efficient computational method. In this article we will consider the functional factory method proposed by Andrea Spanò in "R package qdist: A functional programming approach to truncated probability ditributions", and that I used in "R package qshift: A functional programming approach to shifted probability distributions", that produces functions for truncated and shifted distributions, respectively. [`qdist`](https://github.com/andreaspano/qdist) and [`qshift`](https://github.com/veronicagiro/qshift) packages are available on Github:
+
+```{r, eval=FALSE}
+devtools::install_github("andreaspano/qdist")
+devtools::install_github("veronicagiro/qshift")
+```
+
+We will demonstrate that it is possible to produce functions for truncated and shifted or for shifted and truncated distributions only combining the functions of the two packages. 
 
 # Functional programming as a new approach for computing distribution functions 
+
+Let us sum up the alternative functional programming approach used for developing `qdist` and `qshift`.
 
 R provides probability, density, quantile and random number generator functions in `stats` package, using a stable naming convention both for the names of the functions and in the first argument of these functions:
 
@@ -26,48 +35,68 @@ where <dist> indicates the distribution family.
 
 As a result we have: pnorm(q), dnorm(x), qnorm(p) and rnorm(n) for normal distribution and similarly for all other distributions. 
 
-Starting from this well structured syntax, Andrea Spanò proposed, in `qdist`, a functional programming method that computes truncated distributions functions for each distribution chosen without changing the programming style and syntax of previous functions. 
+Starting from this well structured syntax, Andrea Spanò proposed in `qdist` a functional programming method that computes truncated distributions functions for each distribution chosen without changing the programming style and syntax of previous functions. 
 
 The methodology is based on two R key concepts:    
 
 * the environment of a function can be used as a placeholder for other objects;
 * function formals can be manipulated.
 
-and develops in two steps:
+and develops itself in two steps:
 
-* define the required functions suitable for computing from specific truncated probability models by using the functions available within its package. These functions take as input a probability distribution as a character string, in this case the normal distribution, and return the equivalent truncated distribution as a function object.
+* defines the required functions suitable for computing from specific truncated probability distribution by using the functions available within its package. These functions take as input a probability distribution as a character string, in this case the normal distribution, and return the equivalent truncated distribution function as object:
 
-```{r}
-#devtools::install_github("andreaspano/qdist", build=FALSE)
+```{r, message=FALSE}
 require(qdist)
-tpnorm <- ptruncate("norm") # probability function 
-tdnorm <- dtruncate("norm") # density function
-tqnorm <- qtruncate("norm") # quantile function
-trnorm <- rtruncate("norm") # random generation function
+dtnorm <- dtruncate("norm") # density function
+ptnorm <- ptruncate("norm") # probability function 
+qtnorm <- qtruncate("norm") # quantile function
+rtnorm <- rtruncate("norm") # random generation function
 ```
     
-* use the newly created functions (`tpnorm()`, `tdnorm()`, `tqnorm()`, `trnorm()`) for computing from truncated probability models.
+* uses the newly created functions (`tpnorm()`, `tdnorm()`, `tqnorm()`, `trnorm()`) for computing from truncated probability distributions.
+
+Let us consider `dtnorm()`. It has the same formals as the original `dnorm()`, plus two extra parameters: `L` and `U`, respectively for lower and upper truncation thresholds set by default to `-Inf` and `+Inf`:
 
 ```{r}
-q <- seq(6, 14, len = 100)
-ptnorm(q, mean = 10, sd = 1, L = 9, U = 11)
-```
-    In this example we use function `tpnorm()` to compute the distribution function of a normal distribution with mean 10 and standard deviation 1, truncated in 9 and 11.
-
-The newly generated function `ptnorm()` has the same formals as the original `pnorm()`, plus two extra parameters: `L` and `U`, respectively for lower and upper truncation thresholds set by default to `-Inf` and `+Inf`:
-
-```{r}
-args(pnorm)
-args(tpnorm)
+args(dnorm)
+args(dtnorm)
 ```
 
-`qshift` package share the same logic and the same methodology. The difference is that the functions are designed for shifted distributions.     
-
-Also in this case, the methodology develops in two steps:
-
-* define the required functions suitable for computing from specific shifted probability models by using the tools available within its package. These functions take as input a probability distribution as a character string, in this case the normal distribution, and return the equivalent truncated distribution as a function object.
+Let us see graphically the differences between `dnorm()` to compute the density function of a normal distribution with mean 10 and standard deviation 1 and `tdnorm()` to compute the density function of a normal distribution with mean 10 and standard deviation 1 lower truncated at 9 and upper truncated at 11:
 
 ```{r}
+x <- seq(6, 14, len = 100)
+std_density <- dnorm(x = x, mean = 10, sd = 1)
+trunc_density <- dtnorm(x = x, mean = 10, sd = 1, L = 9, U = 11)
+
+df <- data.frame(x=x, 
+                 type = factor(c(rep("std_density", times=length(x)),
+                    rep("trunc_density", times=length(x))),
+                    levels = c("std_density", "trunc_density")), 
+                  value = c(std_density, trunc_density))
+
+require(ggplot2)
+pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=type)) +
+  geom_line(size=1) +
+  scale_color_manual(values = c("std_density" = "cyan3", 
+                                "trunc_density" = "#89FF99")) +
+  xlab("Value") + ylab("Density") +
+  ggtitle("Density plot for non-truncated and truncated Normal distributions") +
+  theme(legend.title=element_blank(), legend.text= element_text(size=10),
+  plot.title = element_text(size=14), axis.title=element_text(size=12))
+
+print(pl)
+```
+
+
+`qshift` package shares the same logic and the same methodology of `qdist`. The difference is that the functions are designed to compute functions for shifted distributions.     
+
+The methodology is made up of the previously descripted two steps. So it:
+
+* defines the required functions suitable for computing from specific shifted probability models by using the `qshift` functions, that takes as input a probability distribution as a character string, in this case the normal distribution, and returns the equivalent shifted distribution function as object.
+
+```{r, message=FALSE}
 require(qshift)
 dsnorm <- dshift("norm") # density function
 psnorm <- pshift("norm") # probability function
@@ -75,66 +104,126 @@ qsnorm <- qshift("norm") # quantile function
 rsnorm <- rshift("norm") # random generation function
 ```
 
-* se the newly created functions (`tsnorm()`, `tsnorm()`, `tsnorm()`, `tsnorm()`) for computing from truncated probability models.
-```{r}
-x <- seq(4, 14, len = 100)
-positive_shifted <- psnorm(q = x, mean = 8, sd = 1.5, shift = 1)
-```
+* use the newly created functions (`dsnorm()`, `psnorm()`, `qsnorm()`, `rsnorm()`) for computing from shifted probability distributions.
 
-The newly generated function `psnorm()` has the same formals as the original `pnorm()`, plus one extra parameter: `shift`, set by default to 0:
+Let us consider `dsnorm()`. Also this function has the same formals as the original `dnorm()`, plus one extra parameter: `shift`, set by default to 0:
 
 ```{r}
-args(pnorm)
-args(tpnorm)
+args(dnorm)
+args(dtnorm)
 ```
 
-For more details and examples about `qdist` and `qshift` see articles "R package qdist: A functional programming approach to truncated probability ditributions" and "R package qshift: A functional programming approach to shifted probability distributions" available on [Quantide blog](http://www.quantide.com/blog/).
+Let us see graphically the differences between `dnorm()` to compute the density function of a normal distribution with mean 10 and standard deviation 1 and `sdnorm()` to compute the density function of a normal distribution with mean 10 and standard deviation 1 shifted of one unit:
+
+```{r}
+x <- seq(6, 14, len = 100)
+std_density <- dnorm(x = x, mean = 10, sd = 1)
+shift_density <- dsnorm(x = x, mean = 10, sd = 1, shift = 1)
+
+df <- data.frame(x=x, 
+                 type = factor(c(rep("std_density", times=length(x)),
+                    rep("shift_density", times=length(x))),
+                    levels = c("std_density", "shift_density")), 
+                  value = c(std_density, shift_density))
+
+pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=type)) +
+  geom_line(size=1) +
+  scale_color_manual(values = c("std_density" = "cyan3", 
+                                "shift_density" = "#FF89B4")) +
+  xlab("Value") + ylab("Density") +
+  ggtitle("Density plot for non-shifted and shifted Normal distributions") +
+  theme(legend.title=element_blank(), legend.text= element_text(size=10),
+  plot.title = element_text(size=14), axis.title=element_text(size=12))
+
+print(pl)
+```
+
+
+For more details and examples about how `qdist` and `qshift` works, see articles "R package qdist: A functional programming approach to truncated probability ditributions" and "R package qshift: A functional programming approach to shifted probability distributions" available on [Quantide blog](http://www.quantide.com/blog/).
 
 # Distribution function for truncated and shifted or for shifted and truncated distributions
 
-In the previous paragraph we saw how `qdist` and `qshift` packages works and that they are built with a functional programming approach. The functional programming approach whereby the packages are built is the key that allows to obtain distribution functions for truncated and shifted or for shifted and truncated distributions. Let us see how!
+The functional programming approach whereby `qdist` and `qshift` packages are built is the key that allows to obtain distribution functions for truncated and shifted or for shifted and truncated distributions. Let us see how!
 
-Suppose we want to generate the probability functions for a truncated shifted normal distribution.  
-As `pnorm()` is the function that computes the distribution function for a normal distributions, conventionally named `norm`, `ptnorm()`, defined as: 
+Suppose we want to generate the density functions for a truncated shifted normal distribution.  
+As `dnorm()` is the function that computes the density function for a normal distributions, conventionally named `norm`, `dtnorm()`, defined as: 
+```{r}
+dtnorm <- dtruncate("norm")
+```
+
+is the function that computes the density function for a truncated normal distributions, named `tnorm`.
+
+We have to define also the others functions for truncated distribution, as they are necessary for the further step:
+
 ```{r}
 ptnorm <- ptruncate("norm")
+qtnorm <- qtruncate("norm")
+rtnorm <- rtruncate("norm")
 ```
 
-is the function that computes the distribution function for a truncated normal distributions, named `tnorm`. 
-
-So for computing the distribution function of a shifted trucated normal distribution we have to pass `tnorm` distribution as `pshift()` argument:
+So for computing the density function of a shifted trucated normal distribution we have to pass `tnorm` distribution as `dshift()` argument:
 
 ```{r}
-pstnorm <- pshift("tnorm")
+dstnorm <- dshift("tnorm")
 ```
 
-So `pstnorm()` is the function that computes the distribution function of `stnorm`, the shifted truncated normal distribution.
+So `dstnorm()` is the function that computes the density function of `stnorm`, which is the shifted truncated normal distribution.
 
 ```{r}
-args(pstnorm)
+args(dstnorm)
 ```
 
-Looking at the function arguments we see that the sintax style is that of `pnorm()` function plus `L` and `U` arguments for truncated distribution and `shift` argument for shifted distribution.
+Looking at the function arguments we see that the sintax style is that of `dnorm()` function plus `L` and `U` arguments for truncated distribution and `shift` argument for shifted distribution.
 
-The inverse procedure are necessary to generate the distribution function for a shifted truncated distribution.
+The inverse procedure generates the density function for a shifted truncated distribution.
 
-Starting from `pshift` we define:
+Starting from `dshift`, we define `dsnorm()`, the density function of `snorm`, which is the shifted normal distribution:
+```{r}
+dsnorm <- dshift("norm")
+```
+
+We have to define also the others functions for shifted distribution, as they are necessary for the further step:
 
 ```{r}
 psnorm <- pshift("norm")
+qsnorm <- qshift("norm")
+rsnorm <- rshift("norm")
 ```
 
-`psnorm()` is the distribution function of `snorm`, a shifted normal distribution.
-The distribution function of a truncated shifted normal distribution is generated passing `snorm` distribution as `ptruncate()` argument:
+The density function of a truncated shifted normal distribution is generated passing `snorm` distribution as `ptruncate()` argument:
+```{r}
+dtsnorm <- dtruncate("snorm")
+```
+
+So `ptsnorm()` is the function that computes the density function of `stnorm`, which is the truncated shifted normal distribution.
+
+Let us see graphically the differences between the density function of normal distribution, of a shifted truncated normal distribution and of a truncated shifted normal distribution.
 
 ```{r}
-ptsnorm <- ptruncate("snorm")
+std_density <- dnorm(x = x, mean = 10, sd = 1)
+st_density <- dstnorm(x = x, mean = 10, sd = 1, L = 9, U = 11, shift = 1)
+ts_density <- dtsnorm(x = x, mean = 10, sd = 1, L = 9, U = 11, shift = 1)
 ```
 
-So `ptsnorm()` is the function that computes the distribution function of `stnorm` truncated shifted normal distribution.
+```{r}
+df <- data.frame(x=x, 
+                 type = factor(c(rep("std_density", times=length(x)),
+                    rep("st_density", times=length(x)),
+                    rep("ts_density", times=length(x))),
+                    levels = c("std_density", "st_density", "ts_density")), 
+                  value = c(std_density, st_density, ts_density))
 
+pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=type)) +
+  geom_line(size=1) +
+  scale_color_manual(values = c("std_density" = "cyan3", 
+                                "st_density" = "#89FF99", 
+                                "ts_density" = "#FF89B4")) +
+  xlab("Value") + ylab("Density") +
+  ggtitle("Density plot for transformed and not-transformed Normal distributions") +
+  theme(legend.title=element_blank(), legend.text= element_text(size=10),
+  plot.title = element_text(size=14), axis.title=element_text(size=12))
 
+print(pl)
+```
 
-
-
-
+We can conclude that the previous functiona are completely different.
