@@ -1138,7 +1138,7 @@ ltweibull <- function(x, L = -Inf, U = Inf){
     shape <- theta[1]
     scale <- theta[2]
     shift <- theta[3]
-    ld <- dtsweibull(x = x, shape = shape, scale = scale, shift = shift, L = L, U = U, log = TRUE)
+    ld <- log(dtsweibull(x = x, shape = shape, scale = scale, shift = shift, L = L, U = U))
     -sum(ld)
   }
   # maximum likelihood estimation
@@ -1148,7 +1148,7 @@ ltweibull <- function(x, L = -Inf, U = Inf){
 
 rsweibull <- rshift("weibull")
 rtsweibull <- rtruncate("sweibull")
-x <- rtsweibull(n = 100000, shape = 1, scale = 2, shift = 1, L = 5, U = 10)
+x <- rtsweibull(n = 100000, shape = 1, scale = 1.5, shift = 1, L = 5, U = 10)
 
 # maximum likelihood estimate for the shifted weibull distribution
 ltweibull(x = x, L = 5, U = 10)
