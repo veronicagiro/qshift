@@ -65,8 +65,7 @@ pshift <- function(dist){
     pargs <- intersect_args(x = pargs, y = call)
 
     # method for computing distribution values for shifted distribution
-    pargs$q <- eval(pargs$q)
-    pargs$q <- pargs$q - shift
+    pargs$q <- q - shift
     probability <-  do.call("pdist", as.list(pargs))
 
     # returns distribution values for shifted distributions
