@@ -1,0 +1,1 @@
+This article demonstrates an approach for developing truncated probability, density, quantile and random number generator functions, by using the functional nature of the R language, so that the resulting programming technique for truncated functions can be as similar as possible to the existing non truncated approach.
