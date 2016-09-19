@@ -33,6 +33,27 @@ a <- qsnorm(p = 1:9/10, mean = 2, sd = 3, shift = 4, log = F, lower.tail = F)
 spnorm(q = a, mean = 2, sd = 3, shift=4, log.p = F, lower.tail = F)
 
 
+spweibull <- pshift("weibull")
+qsweibull <- qshift("weibull")
+
+a <- qsweibull(p = log(1:9/10), shape = 2, scale = 3, shift = 4, log = T, lower.tail = F)
+spweibull(q = a, shape = 2, scale = 3, shift=4, log.p = T, lower.tail = F)
+
+a <- qsweibull(p = log(1:9/10), shape = 2, scale = 3, shift = -4, log = T, lower.tail = F)
+spweibull(q = a, shape = 2, scale = 3, shift=-4, log.p = F, lower.tail = F)
+
+a <- qsweibull(p = log(1:9/10), shape = 2, scale = 3, shift = -4, log = T, lower.tail = T)
+spweibull(q = a, shape = 2, scale = 3, shift=-4, log.p = T, lower.tail = T)
+
+a <- qsweibull(p = 1:9/10, shape = 2, scale = 3, shift = -4, log = F, lower.tail = F)
+spweibull(q = a, shape = 2, scale = 3, shift=-4, log.p = F, lower.tail = F)
+
+
+a <- qsweibull(p = 1:9/10, shape = 2, scale = 3, shift = -4, log = F, lower.tail = T)
+spweibull(q = a, shape = 2, scale = 3, shift=-4, log.p = F, lower.tail = T)
+
+
+
 
 qsnorm(p = 1:9/10, mean = 2, sd = 3, log = F, lower.tail = F)
 qnorm(p = 1:9/10, mean = 2, sd = 3, log = F, lower.tail = F)
