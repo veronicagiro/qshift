@@ -1,5 +1,6 @@
 #' Compute density function of a shifted distribution
-#'
+#' @description This function generates the density function of a shifted specified distribution.
+#' Passing the distribution conventional name as argument, it returns the density function of the shifted specified distribution.
 #' @param dist character string indicating the distribution name. It can be set as:
 #' \itemize{
 #'   \item beta Beta Distribution
@@ -23,7 +24,7 @@
 #'   \item signrank Wilcoxon Signed Rank Statistic Distribution
 #' }
 #'
-#' @return numeric vector of the density function of a specified distribution
+#' @return density function of the shifted specified distribution
 #' @export
 #'
 #' @examples
@@ -46,36 +47,29 @@
 #' two_shift
 #'
 dshift <- function(dist){
-
-    ddist=paste("d", dist, sep = "")
-
-    # gets density function
-    ddist <-  get(ddist, mode = "function")
-
-    # gets argument of density function
-    dargs <- formals(ddist)
-
-    # Output function starts here
-    density <- function(){
-
-      # gets density arguments
-      call <- as.list(match.call())[-1]
-
-      # as a result, the whole string gets all unique arguments belonging to density function and ddist
-      dargs <- intersect_args(x = dargs, y = call)
-
-      # method for computing density values for shifted distributions
-      dargs$x <- x - shift
-
-      density <- do.call("ddist", as.list(dargs))
-
-      # returns density values for shifted distributions
-      return(density)
-
-    }
-
-    # add to density function formals shift with values as passed with dshift
-    formals(density) <-  c(formals(ddist), eval(substitute(alist(shift=0))))
-    # return density function
+  # generate density function name of the specified distribution
+  ddist=paste("d", dist, sep = "")
+  # gets density function and its arguments
+  ddist <-  get(ddist, mode = "function")
+  dargs <- formals(ddist)
+  
+  # Output function starts here
+  density <- function(){
+    # gets density arguments
+    call <- as.list(match.call())[-1]
+    # intersect density function and the call (ddist), giving to density function arguments the values set to the corresponding arguments of the call (ddist)
+    dargs <- intersect_args(x = dargs, y = call)
+    # method for computing density values for shifted distributions
+    dargs$x <- x - shift
+    density <- do.call("ddist", as.list(dargs))
+    
+    # returns density values for shifted distributions
     return(density)
+    
   }
+  
+  # add to density function formals shift with values as passed with dshift
+  formals(density) <-  c(formals(ddist), eval(substitute(alist(shift=0))))
+  # return density function
+  return(density)
+}

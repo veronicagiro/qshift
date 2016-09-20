@@ -1,5 +1,6 @@
 #' Compute distribution function of a shifted distribution
-#'
+#' @description This function generates the distribution function of a shifted specified distribution.
+#' Passing the distribution conventional name as argument, it returns the distribution function of the shifted specified distribution.
 #' @param dist character string indicating distribution name. It can be set as:
 #' \itemize{
 #'   \item beta Beta Distribution
@@ -23,7 +24,7 @@
 #'   \item signrank Wilcoxon Signed Rank Statistic Distribution
 #' }
 #'
-#' @return numeric vector of the distribution function of a specified distribution
+#' @return distribution function of the truncated specified distribution
 #' @export
 #'
 #' @examples
@@ -46,37 +47,33 @@
 #' two_shift
 #'
 pshift <- function(dist){
-
-    pdist <- paste("p", dist, sep = "")
-
-    # gets distribution function
-    pdist <-  get(pdist, mode = "function")
-
-    # gets argument of distribution function
-    pargs <-  formals(pdist)
-
-    # Output function starts here
-    probability <- function(){
-
+  # generate distribution function name of the specified distribution
+  pdist <- paste("p", dist, sep = "")
+  # get distribution function and its arguments
+  pdist <-  get(pdist, mode = "function")
+  pargs <-  formals(pdist)
+  
+  # Output function starts here
+  probability <- function(){
+    
     # gets distribution arguments
     call <-  as.list(match.call())[-1]
-
-    # as a result, the whole string gets all unique arguments belonging to distribution function and pdist
+    # intersect distribution function and the call (pdist), giving to distribution function arguments the values set to the corresponding arguments of the call (pdist)
     pargs <- intersect_args(x = pargs, y = call)
-
+    
     # method for computing distribution values for shifted distribution
     pargs$q <- q - shift
     probability <-  do.call("pdist", as.list(pargs))
-
+    
     # returns distribution values for shifted distributions
     return(probability)
-
-    }
-
-    # add to distribution function formals shift with values as passed with pshift
-    formals(probability) <- c(pargs, eval(substitute(alist(shift=0))))
-    # return distribution function
-    return(probability)
-
+    
   }
+  
+  # add to distribution function formals shift with values as passed with pshift
+  formals(probability) <- c(pargs, eval(substitute(alist(shift=0))))
+  # return distribution function
+  return(probability)
+  
+}
 

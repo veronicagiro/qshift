@@ -1,5 +1,6 @@
 #' Compute quantile function of a shifted distribution
-#'
+#' @description This function generates the quantile function of a shifted specified distribution.
+#' Passing the distribution conventional name as argument, it returns the quantile function of the shifted specified distribution.
 #' @param dist dist character string indicating distribution name. It can be set as:
 #' \itemize{
 #'   \item beta Beta Distribution
@@ -23,7 +24,7 @@
 #'   \item signrank Wilcoxon Signed Rank Statistic Distribution
 #' }
 #'
-#' @return numeric vector of the quantile function of a specified distribution
+#' @return quantile function of a shifted specified distribution
 #' @export
 #'
 #' @examples
@@ -47,35 +48,34 @@
 #' two_shift
 #'
 qshift <- function(dist){
-
-    qdist=paste("q", dist, sep = "")
-
-    # gets quantile function
-    # gets argument of quantile function
-    qdist <-  get(qdist, mode = "function")
-    qargs <-  formals(qdist)
-
-    # Output function starts here
-    quantile <- function(){
-
-      # gets quantile arguments
-      call <- as.list(match.call())[-1]
-
-      # as a result, the whole string gets all unique arguments belonging to quantile function and qdist
-      qargs <- intersect_args(x = qargs, y = call)
-
-      # method for computing quantiles values for shifted distributions
-       quantile <- do.call("qdist", as.list(qargs))
-       quantile <- quantile + shift
-
-       # returns quantile values for shifted distributions
-      return(quantile)
-
-    }
-    # add to quantile function formals shift with values as passed with qshift
-    formals(quantile) <-  c(formals(qdist), eval(substitute(alist(shift=0))))
-    # return quantile function
+  # generate quantile function name of the specified distribution
+  qdist=paste("q", dist, sep = "")
+  
+  # gets quantile function and its arguments
+  qdist <-  get(qdist, mode = "function")
+  qargs <-  formals(qdist)
+  
+  # Output function starts here
+  quantile <- function(){
+    
+    # gets quantile arguments
+    call <- as.list(match.call())[-1]
+    
+    # intersect quantile function and the call (qdist), giving to quantile function arguments the values set to the corresponding arguments of the call (qdist)
+    qargs <- intersect_args(x = qargs, y = call)
+    
+    # method for computing quantiles values for shifted distributions
+    quantile <- do.call("qdist", as.list(qargs))
+    quantile <- quantile + shift
+    
+    # returns quantile values for shifted distributions
     return(quantile)
-
+    
+  }
+  # add to quantile function formals shift with values as passed with qshift
+  formals(quantile) <-  c(formals(qdist), eval(substitute(alist(shift=0))))
+  # return quantile function
+  return(quantile)
+  
 }
 

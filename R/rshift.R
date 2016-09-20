@@ -1,5 +1,6 @@
 #' Perform Random generation for a shifted distribution
-#'
+#' @description This function generates the random number generator function of a shifted specified distribution.
+#' Passing the distribution conventional name as argument, it returns the random number generator function of the shifted specified distribution.
 #' @param dist character string indicating distribution name. It can be set as:
 #' \itemize{
 #'   \item beta Beta Distribution
@@ -24,7 +25,7 @@
 #' }
 #'
 #'
-#' @return numeric vector of random generated values from a specified distribution
+#' @return random number generator function of a shifted specified distribution
 #' @export
 #'
 #' @examples
@@ -66,13 +67,8 @@ rshift <- function(dist){
     # gets random generation arguments
     call <- as.list(match.call())[-1]
 
-    # as a result, the whole string gets all unique arguments belonging to random generation function and rdist
+    # intersect random number generator function and the call (rdist), giving to random number generator function arguments the values set to the corresponding arguments of the call (rdist)
     rargs <- intersect_args(x = rargs, y = call)
-
-    # Define starting point for random computation or not
-    if(set_seed){
-      set.seed(1)
-    }
 
     # method for computing random generated values for shifted distributions
     random <- do.call(rdist, as.list(rargs))
@@ -82,8 +78,8 @@ rshift <- function(dist){
 
   }
 
-  # add to random generation function formals shift and set_seed with values as passed with rshift
-  formals(random) <-  c(formals(rdist), eval(substitute(alist(shift=0, set_seed = FALSE))))
+  # add to random generation function formal shift with values as passed with rshift
+  formals(random) <-  c(formals(rdist), eval(substitute(alist(shift=0))))
   # return random generation function
   return(random)
 }
