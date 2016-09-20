@@ -46,7 +46,7 @@
 #' two_shift <- qc(p = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1), df = 2, shift = 2)
 #' two_shift
 #'
-qshift <- function (dist){
+qshift <- function(dist){
 
     qdist=paste("q", dist, sep = "")
 
@@ -56,7 +56,7 @@ qshift <- function (dist){
     qargs <-  formals(qdist)
 
     # Output function starts here
-    quantile <- function() {
+    quantile <- function(){
 
       # gets quantile arguments
       call <- as.list(match.call())[-1]
