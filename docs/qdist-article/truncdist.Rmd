@@ -28,7 +28,7 @@ naming convention both for the names of the functions and in the first argument 
 * probability distribution functions `p<dist>(q)` with `q` vector of quantiles;
 * density functions `d<dist>(x)` with `x` vector of quantiles;
 * quantile functions `q<dist>(p)` with `p` vector of probabilities;
-* random number generation `r<dist>(n)` with `n` number of observations.
+* random number generator function `r<dist>(n)` with `n` number of observations.
 
 where `<dist>` indicates the distribution family.
 
@@ -63,7 +63,7 @@ where `a = 9` and `b = 11` respectively represent the left and the right thresho
 Nevertheless, the above command requires a change in our programming style. We are used to
 have a single R function for each distribution: `pnorm()`, `pweibull()` etc. . .
 
-We could easily write function `tpnorm()`, a truncated version for `pnorm()`, as:
+We could easily write function `ptnorm()`, a truncated version for `pnorm()`, as:
 
 ```{r}
 tpnorm <- function (q, mean = 0, sd = 1, L = -Inf, U = Inf, ...){
@@ -86,7 +86,7 @@ but it is limited to the normal distribution. Following this approach, we would 
 a different function for each probability distribution and, we’ll have to admit that all of this could
 become quite time consuming and not really efficient.
 
-As an alternative approach, we decided to develop package `qdist` available at [https://github.com/andreaspano/qdist](https://github.com/andreaspano/qdist) .
+As an alternative approach, we decided to develop package `qdist` available at [https://github.com/veronicagiro/qtruncate](https://github.com/veronicagiro/qtruncate) .
 
 This package is made of four functions:
 
@@ -99,37 +99,37 @@ These functions share the same logic: they take as input a probability distribut
 string and return the equivalent truncated distribution as a function object so that we can write:
 
 ```{r, message=FALSE}
-devtools::install_github("andreaspano/qdist", build=FALSE)
+devtools::install_github("veronicagiro/qtruncate", build=FALSE)
 require(qdist)
-tpnorm <- ptruncate("norm")
-tdnorm <- dtruncate("norm")
-tqnorm <- qtruncate("norm")
-trnorm <- rtruncate("norm")
+ptnorm <- ptruncate("norm")
+dtnorm <- dtruncate("norm")
+qtnorm <- qtruncate("norm")
+rtnorm <- rtruncate("norm")
 ```
 
 As a first detailed example, let’s consider `ptruncate()` in more details applied to the normal case.
 
-The newly generated function `tpnorm()` has the same formals as the original `pnorm()`, plus two
+The newly generated function `ptnorm()` has the same formals as the original `pnorm()`, plus two
 extra parameters: `L` and `U`, respectively for lower and upper truncation thresholds set by default to
 `-Inf` and `+Inf`:
 
 ```{r}
 args(pnorm)
-args(tpnorm)
+args(ptnorm)
 ```
 
-Once we have defined `tpnorm()` we can use it for generating probability values from a non-
+Once we have defined `ptnorm()` we can use it for generating probability values from a non-
 truncated normal distribution by leaving parameters `L` and `U` set to their defaults:
 
 ```{r}
 q <- seq(6, 14, len = 100)
-p_L_U <- tpnorm(q, mean = 10, sd = 1)
+p_L_U <- ptnorm(q, mean = 10, sd = 1)
 ```
 
 or from any truncated normal distribution by setting values for `L` and `U`:
 
 ```{r}
-p_L9_U11 <- tpnorm(q, mean = 10, sd = 1, L = 9, U = 11)
+p_L9_U11 <- ptnorm(q, mean = 10, sd = 1, L = 9, U = 11)
 ```
 
 We can visualize these results by plotting them:
@@ -137,13 +137,13 @@ We can visualize these results by plotting them:
 ```{r, fig.width=8, warning=FALSE, message=FALSE}
 df <- data.frame(
   q=q,
-  tpnorm_type = factor(c(rep("p_L_U", times=length(q)), rep("p_L9_U11", times=length(q))), levels = c("p_L_U", "p_L9_U11")),
+  ptnorm_type = factor(c(rep("p_L_U", times=length(q)), rep("p_L9_U11", times=length(q))), levels = c("p_L_U", "p_L9_U11")),
   value = c(p_L_U, p_L9_U11)
 )
 
 require(ggplot2)
 
-pl <- ggplot(data = df, mapping = aes(x=q, y=value, col=tpnorm_type)) +
+pl <- ggplot(data = df, mapping = aes(x=q, y=value, col=ptnorm_type)) +
   geom_line(size=1) + scale_color_manual(values = c("p_L_U" = "darkgray", "p_L9_U11" ="darkred")) +   
   xlab("Quantile") + ylab("Probability") + 
   ggtitle("Probability plot for truncated and non-truncated normal distribution") +
@@ -153,20 +153,20 @@ print(pl)
 ```
 
 As a second example, we consider a density function for a left truncated Weibull distribution. We
-first generate function `tdweibull()` by using `dtruncate()`:
+first generate function `dtweibull()` by using `dtruncate()`:
 
 ```{r}
-tdweibull <- dtruncate("weibull")
+dtweibull <- dtruncate("weibull")
 ```
 
 and afterward, we can use it as:
 
 ```{r}
 x <- qweibull(ppoints(1000), shape = 2, scale = 7)
-d_L0 <- tdweibull(x, shape = 2, scale = 7)
-d_L3 <- tdweibull(x, shape = 2, scale = 7, L= 3)
-d_L5 <- tdweibull(x, shape = 2, scale = 7, L= 5)
-d_L7 <- tdweibull(x, shape = 2, scale = 7, L= 7)
+d_L0 <- dtweibull(x, shape = 2, scale = 7)
+d_L3 <- dtweibull(x, shape = 2, scale = 7, L= 3)
+d_L5 <- dtweibull(x, shape = 2, scale = 7, L= 5)
+d_L7 <- dtweibull(x, shape = 2, scale = 7, L= 7)
 ```
 
 with the following results:
@@ -174,11 +174,11 @@ with the following results:
 ```{r, warning=FALSE, message=FALSE}
 df <- data.frame(
   x=x,
-  tdweibull_type = factor(c(rep("d_L0", times=length(x)), rep("d_L3", times=length(x)), rep("d_L5", times=length(x)), rep("d_L7", times=length(x))), levels = c("d_L0", "d_L3", "d_L5", "d_L7")),
+  dtweibull_type = factor(c(rep("d_L0", times=length(x)), rep("d_L3", times=length(x)), rep("d_L5", times=length(x)), rep("d_L7", times=length(x))), levels = c("d_L0", "d_L3", "d_L5", "d_L7")),
   value = c(d_L0, d_L3, d_L5, d_L7)
 )
 
-pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=tdweibull_type)) +
+pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=dtweibull_type)) +
   geom_line(size=1) + 
   scale_color_manual(values = c("d_L0" = "darkgray", "d_L3"="darkred", "d_L5" = "darkblue", "d_L7"="darkgreen")) +   
   xlab("Quantile") + ylab("Density") + ggtitle("Density plot for truncated Weibull distributions") +
@@ -190,9 +190,9 @@ As an example of random number generator function we consider the Gumbel distrib
 
 ```{r, warning=FALSE, message=FALSE}
 require(evd)
-trgumbel <- rtruncate("gumbel")
-args(trgumbel)
-rg <- trgumbel(10^4, loc = 3, scale = 2, L = 5)
+rtgumbel <- rtruncate("gumbel")
+args(rtgumbel)
+rg <- rtgumbel(10^4, loc = 3, scale = 2, L = 5)
 df <- data.frame(rg=rg)
 
 pl <- ggplot(data = df, mapping = aes(x=rg)) +
@@ -208,7 +208,7 @@ case of main quantiles generated from a Poisson distribution. We first generate 
 function:
 
 ```{r}
-tqpois <- qtruncate("pois")
+qtpois <- qtruncate("pois")
 ```
 
 We use the newly created function for computing percentiles from four Poisson distributions
@@ -217,28 +217,28 @@ truncated at different tresholds:
 ```{r}
 p <- ppoints(100)
 # No truncation
-q <- tqpois(p, lambda = 10)
+q <- qtpois(p, lambda = 10)
 # Lower truncation L = 9
-q_L9 <- tqpois(p, lambda = 10, L = 9)
+q_L9 <- qtpois(p, lambda = 10, L = 9)
 # Upper truncation H = 14
-q_U14 <- tqpois(p, lambda = 10, U = 14)
+q_U14 <- qtpois(p, lambda = 10, U = 14)
 # Both sides truncation L = 9, H = 14
-q_L9_U14 <- tqpois(p, lambda = 10, L = 9, U = 14)
+q_L9_U14 <- qtpois(p, lambda = 10, L = 9, U = 14)
 ```
 
 Finally, we plot the computed percentiles:
 
 ```{r}
 df <- data.frame(p=p,
-  tqpois_type=factor(c(rep("No truncation", times=length(p)), rep("Lower truncation L = 9", times=length(p)), 
+  qtpois_type=factor(c(rep("No truncation", times=length(p)), rep("Lower truncation L = 9", times=length(p)), 
     rep("Upper truncation H = 14", times=length(p)), rep("Both sides truncation L = 9, H = 14", times=length(p))), 
     levels= c("No truncation", "Lower truncation L = 9", "Upper truncation H = 14", "Both sides truncation L = 9, H = 14")),
   value=c(q, q_L9, q_U14, q_L9_U14))
 
-pl <- ggplot(data = df, mapping = aes(x=value, y=p, col=tqpois_type)) +
+pl <- ggplot(data = df, mapping = aes(x=value, y=p, col=qtpois_type)) +
   geom_line(size=1, show.legend = FALSE) + 
   ylab("Probability") + xlab("Quantiles") + ggtitle("Quantiles from truncated Poisson distribution") +
-  facet_wrap(~tqpois_type, nrow = 2) +
+  facet_wrap(~qtpois_type, nrow = 2) +
   theme(strip.text = element_text(size=12), plot.title = element_text(size=18), axis.title=element_text(size=14))
 
 print(pl)  
@@ -251,19 +251,19 @@ the body of the gamma set of functions. As a consequence, suppose we define a tr
 gamma distribution as:
 
 ```{r}
-tqgamma <- qtruncate("gamma")
+qtgamma <- qtruncate("gamma")
 ```
 
-When we use `tqgamma()` with parameter rate it works but may return a set of `warnings`:
+When we use `qtgamma()` with parameter rate it works but may return a set of `warnings`:
 
 ```{r}
-tqgamma(.25, shape = 1, rate = .3)
+qtgamma(.25, shape = 1, rate = .3)
 ```
 
 when we use the same function with parameter `scale`, it returns an error:
 
 ```{r, error=TRUE}
-tqgamma(ppoints(10), shape = 1, scale = 3)
+qtgamma(ppoints(10), shape = 1, scale = 3)
 ```
 
 Note that, if we simply redefine `qgamma()` and `pgamma()` as:
@@ -297,8 +297,8 @@ pgamma <- function (q, shape, rate = 1, lower.tail = TRUE, log.p = FALSE) {
 now everything should work fine:
 
 ```{r, error=TRUE}
-tqgamma <- qtruncate("gamma")
-tqgamma(p = .25, shape = 1, rate = 3)
+qtgamma <- qtruncate("gamma")
+qtgamma(p = .25, shape = 1, rate = 3)
 ```
 
 ## Extending the computation
@@ -309,7 +309,7 @@ distribution, we can achieve this by first defining the truncated density functi
 distribution:
 
 ```{r}
-tdnorm <- dtruncate("norm")
+dtnorm <- dtruncate("norm")
 ```
 
 and, subsequently, by using `tdnorm()` within an estimator function:
@@ -320,7 +320,7 @@ ltnorm <- function(x, L = -Inf, U = Inf) {
   ll <- function(theta, x, L = -Inf, U = Inf) {
     mean <- theta[1]
     sd <- theta[2]
-    ld <- tdnorm(x = x, mean = mean, sd = sd, L = L , U = U, log = TRUE)
+    ld <- dtnorm(x = x, mean = mean, sd = sd, L = L , U = U, log = TRUE)
     -sum(ld)
   }
   optim(par = theta, fn = ll, x = x, L = L, U = U)[["par"]]
@@ -330,10 +330,11 @@ ltnorm <- function(x, L = -Inf, U = Inf) {
 As a result:
 
 ```{r}
-trnorm <- rtruncate("norm")
-x <- trnorm(n = 1000, mean = 5, sd = 2, L = 3, U = 6)
+rtnorm <- rtruncate("norm")
+x <- rtnorm(n = 10000, mean = 5, sd = 2, L = 3, U = 6)
 ltnorm( x = x, L = 3, U = 6)
 ```
+
 
 ## Computational details
 
@@ -505,6 +506,15 @@ formals(mean.default)[["na.rm"]] <- TRUE
 mean(c(1,2,NA))
 ```
 
+### log, log.p and lower.tail formals
+
+Unlike `truncdist` package, `qdist` allows us to use also the functionalities of formals `log` for density function, `log.p` and `lower.tail` for distribution and quantile functions.   
+`qdist` functions uses `stats` distribution functions for computing from truncated distributions models, but not for performing the functionalities of `log`, `log.p` and `lower.tail` arguments, as they would have been incorrect applied to a truncated distribution. `log`, `log.p` and `lower.tail` functionalities are computed by using an alternative methods that produce results extremely close to the original ones.
+
+<!--
+Considering the Normal distribution as example, `ptruncate()` function uses `pnorm()` function to built probability function for truncated Normal distribution, defined as `ptnorm()`. However, `log.p` and `lower.tail` formals of the resulting function `ptnorm()` are not computed with the help of `pnorm()` function because their functionalities would have been incorrect applied to a truncated distribution. The functionalities of `log.p` and `lower.tail` are computed by using an alternative method that produces results extremely close to the original ones.
+
+-->
 
 ## Bibliography
 
