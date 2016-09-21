@@ -1,6 +1,11 @@
 ---
-title: "R functional programming approach for truncated and shifted and for shifted and truncated probability distribution functions"
-output: html_document
+title: R functional programming approach for truncated and shifted and for shifted
+  and truncated probability distribution functions
+output:
+  pdf_document: default
+  html_document:
+    highlight: null
+    theme: null
 ---
 
 # Introduction
