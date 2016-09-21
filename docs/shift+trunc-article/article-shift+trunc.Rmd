@@ -1,7 +1,5 @@
 ---
-title: "distr shiftate + troncate"
-author: "Veronica"
-date: "September 12, 2016"
+title: "R functional programming approach for truncated and shifted and for shifted and truncated probability distribution functions"
 output: html_document
 ---
 
@@ -11,37 +9,37 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introduction
 
-R programming functional nature allows programmer to implement and manipulate functions as we need. Functional programming is a style of programming that emphasizes the evaluation of expressions rather than the execution of commands, so these functions produce results that depend only on their inputs and not on the program state. This style has a great power and includes lots of tools that combined together can allows us to produce results with the most efficient computational method. One of them is the functional factory, which is a factory for making new functions. It allows us to use closures, which are functions together with a referencing environment, to write specific functions that, in turn, can be used to generate new functions. So we can have a double layer of development: a first layer that is used to do all the complex work in common to all functions and a second layer that defines the details of each function. This fundamentals was used to develop the computational method proposed by Andrea Spanò in "R package qdist: A functional programming approach to truncated probability ditributions", and that I used in "R package qshift: A functional programming approach to shifted probability distributions", that produces functions for truncated and shifted distributions, respectively.  [`qdist`](https://github.com/andreaspano/qdist) and [`qshift`](https://github.com/veronicagiro/qshift) packages are available on Github:
+R programming functional nature allows programmer to implement and manipulate functions as needed. Functional programming is a style of programming that emphasizes the evaluation of expressions rather than the execution of commands, so these functions produce results that depend only on their inputs and not on the program state. This style has a great power and includes lots of tools that combined together can allows us to produce results with the most efficient computational method. One of them is the functional factory, which is a factory for making new functions. It allows us to use closures, which are functions together with a referencing environment, to write specific functions that, in turn, can be used to generate new functions. So we can have a double layer of development: a first layer that is used to do all the complex work in common to all functions and a second layer that defines the details of each function. This fundamentals was used to develop the computational method proposed by Andrea Spanò in "R package qdist: A functional programming approach to truncated probability distributions", and that I used in "R package qshift: A functional programming approach to shifted probability distributions", that produces functions for truncated and shifted distributions, respectively.  [`qdist`](https://github.com/veronicagiro/qdist) and [`qshift`](https://github.com/veronicagiro/qshift) packages are available on Github:
 
 ```{r, eval=FALSE}
-devtools::install_github("andreaspano/qdist")
+devtools::install_github("veronicagiro/qtruncate")
 devtools::install_github("veronicagiro/qshift")
 ```
 
-In the previous citated articles, we dealt with separately shifted and truncated distributions. But in the real life, we sometimes work with random variables arising from more than one transformation. So in this article, we will demonstrate that it is possible to produce functions for truncated and shifted or for shifted and truncated distributions only combining the functions of the two packages thanks to functional programming approach used to built them. 
+In the previous citated articles, we dealt separately with shifted and truncated distributions. But in real life, we sometimes work with random variables arising from more than one transformation. So in this article, we will demonstrate that we can produce functions for truncated and shifted or for shifted and truncated distributions only combining the functions of the two packages. This is possible because of functional programming approach used to build them. 
 
 
 # Distribution functions for truncated and shifted or for shifted and truncated distributions
 
-R provides probability, density, quantile and random number generation functions in `stats` package. These functions share a stable naming convention both for the names of the functions and in the first argument of these functions. In particular: 
+R provides density, probability, quantile and random number generator functions in `stats` package. These functions share a stable naming convention both for the names of the functions and in the first argument of these functions. In particular: 
 
-* `p<dist>(q)` with `q` vector of quantiles, identifies probability distribution functions
 * `d<dist>(x)` with `x` vector of quantiles, identifies density functions
+* `p<dist>(q)` with `q` vector of quantiles, identifies probability distribution functions
 * `q<dist>(p)` with `p` vector of probabilities, identifies quantile functions
 * `r<dist>(n)` with `n` number of observations, identifies random number generation
 
 where `<dist>` indicates the distribution family.  
 
-As a result we have: `pweibull(q)`, `dweibull(x)`, `qweibull(p)` and `rweibull(n)` for Weibull distribution and similarly for all other distributions. 
+As a result we have: `dweibull(x)`, `pweibull(q)`, `qweibull(p)` and `rweibull(n)` for Weibull distribution and similarly for all other distributions. 
 
 Andrea Spanò proposed in `qdist` a functional programming method that computes truncated distributions functions for each distribution chosen without changing the well structured programming style and syntax of previous functions. 
 
-The computational methodology proposed in `qdist` is based on two R key concepts:    
+The computational method proposed in `qdist` is based on two R key concepts:    
 
 * the environment of a function can be used as a placeholder for other objects (for detail see Andrea Spanò article "R package qdist: A functional programming approach to truncated probability ditributions"")
 * function formals can be manipulated
 
-and it is made of two steps:
+and it is made up of two steps:
 
 1. defines the required functions suitable for computing from specific truncated probability distribution by using the functions available within its package. These functions take as input a probability distribution as a character string, in this case the Weibull distribution, and return the equivalent truncated distribution function as object:
 
@@ -50,10 +48,10 @@ require(qdist)
 dtweibull <- dtruncate("weibull") # density function
 ptweibull <- ptruncate("weibull") # probability function 
 qtweibull <- qtruncate("weibull") # quantile function
-rtweibull <- rtruncate("weibull") # random generation function
+rtweibull <- rtruncate("weibull") # random generator function
 ```
     
-2. uses the newly created functions (`tpweibull()`, `tdweibull()`, `tqweibull()`, `trweibull()`) for computing from truncated probability distributions.
+2. uses the newly created functions (`dtweibull()`, `ptweibull()`, `qtweibull()`, `rtweibull()`) for computing from truncated probability distributions.
 
 Let us consider `dtweibull()`. It has the same formals as the original `dweibull()`, plus two extra parameters: `L` and `U`, respectively for lower and upper truncation thresholds set by default to `-Inf` and `+Inf`:
 
@@ -64,7 +62,7 @@ args(dtweibull)
 
 As `dweibull()` is the function that computes the density function for a Weibull distribution, conventionally named `weibull`, `dtweibull()` is the function that computes the density function for a truncated Weibull distributions, named `tweibull`.
 
-Suppose we want to generate the density function for a **shifted truncated** Weibull distribution. We have to entrust to `qshift` package. `qshift` package shares the same logic and the same methodology of `qdist`. The difference is that the functions are designed to compute functions for shifted distributions.
+Suppose we want to generate the density function for a **truncated and shifted** Weibull distribution. We need `qshift` package. `qshift` package shares the same logic and the same methodology of `qdist`. The difference is that the functions are designed to compute functions for shifted distributions.
 In particular, `qshift` package includes the following four functions:
 
 * `dshift()`, for density function
@@ -72,103 +70,107 @@ In particular, `qshift` package includes the following four functions:
 * `qshift()`, for quantile function
 * `rshift()`, for random generator function
 
-So for computing the density function of a shifted trucated Weibull distribution we have to pass `tweibull` distribution as `dshift()` argument:
+So for computing the density function of a trucated and shifted Weibull distribution we have to set `tweibull` distribution as `dshift()` argument:
 
 ```{r, message=FALSE}
 require(qshift)
 dstweibull <- dshift("tweibull")
 ```
 
-So `dstweibull()` is the function that computes the density function of `stweibull`, which is the shifted truncated Weibull distribution.
+So `dstweibull()` is the function that computes the density function of `stweibull`, which is the truncated and shifted Weibull distribution.
 
 ```{r}
 args(dstweibull)
 ```
 
-Looking at the function arguments we see that the sintax style is that of `dweibull()` function plus `L` and `U` arguments for truncated distribution and `shift` argument for shifted distribution.
+Looking at the function arguments, we see that the syntax style is that of `dweibull()` function plus `L` and `U` arguments for truncated component of the distribution and `shift` argument for shifted component of the distribution.
+
+<!--
+va bene dire componente troncata e componente shiftata della distribuzione?
+-->
 
 Let us graphically compare the results of `dweibull()`, `dtweibull()` and `dstweibull()` functions:
 
 ```{r}
-x <- seq(0, 6, len = 100)
-orig_density <- dweibull(x = x, shape = 2, scale = 1.5)
-trunc_density <- dtweibull(x = x, shape = 2, scale = 1.5, L = 1, U = 4)
-shift_trunc_density <- dstweibull(x = x, shape = 2, scale = 1.5, L = 1, U = 4, shift = 1)
+x <- seq(0, 5, len = 100)
+orig_density <- dweibull(x = x, shape = 1.5, scale = 1)
+trunc_density <- dtweibull(x = x, shape = 1.5, scale = 1, L = 1.5, U = 3)
+trunc_shift_density <- dstweibull(x = x, shape = 1.5, scale = 1, L = 1.5, U = 3, shift = 1)
 ```
 
-```{r}
+```{r, message=FALSE}
 df <- data.frame(x=x, 
                  type = factor(c(rep("orig_density", times=length(x)),
                     rep("trunc_density", times=length(x)),
-                    rep("shift_trunc_density", times=length(x))),
-                    levels = c("orig_density", "trunc_density", "shift_trunc_density")), 
-                  value = c(orig_density, trunc_density, shift_trunc_density))
+                    rep("trunc_shift_density", times=length(x))),
+                    levels = c("orig_density", "trunc_density", "trunc_shift_density")), 
+                  value = c(orig_density, trunc_density, trunc_shift_density))
 require(ggplot2)
 pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=type)) +
   geom_line(size=1) +
   scale_color_manual(values = c("orig_density" = "cyan3", 
                                 "trunc_density" = "#89FF99", 
-                                "shift_trunc_density" = "#FF89B4")) +
-  xlab("Value") + ylab("Density") +
-  ggtitle(paste("Density plot for non-transformed, truncated", "and shifted truncated Normal distributions", sep = "\n")) +
+                                "trunc_shift_density" = "#FF89B4")) +
+  xlab("Value") + ylab("Density") + ylim(c(0,1.9)) +
+  ggtitle(paste("Density plot for non-transformed, truncated", "and truncated and shifted Weibull distributions", sep = "\n")) +
   theme(legend.title=element_blank(), legend.text= element_text(size=10),
   plot.title = element_text(size=14), axis.title=element_text(size=12))
 
 print(pl)
 ```
 
-The inverse procedure generates the density function for a **truncated shifted** weibull distribution.
+The inverse procedure generates the density function for a **shifted and truncated** Weibull distribution.
 
-Starting from `dshift()` function of `qshift` package, we define `dsweibull()`, the density function of `sweibull`, which is the shifted weibull distribution:
+Starting from `dshift()` function of `qshift` package, we define `dsweibull()`, the density function of `sweibull`, which is the shifted Weibull distribution:
 ```{r}
-dsweibull <- dshift("weibull")
+dsweibull <- dshift("weibull") # density function
 ```
 
 We have to define also the others functions for shifted distribution, as they are implicitly necessary for the further step:
 
 ```{r}
-psweibull <- pshift("weibull")
-qsweibull <- qshift("weibull")
-rsweibull <- rshift("weibull")
+psweibull <- pshift("weibull") # probability function 
+qsweibull <- qshift("weibull") # quantile function
+rsweibull <- rshift("weibull") # random generator function
 ```
 
-The density function of a truncated shifted Weibull distribution is generated passing `sweibull` distribution as `ptruncate()` argument:
+The density function of a shifted and truncated Weibull distribution is generated setting `sweibull` distribution as `ptruncate()` argument:
 ```{r}
 dtsweibull <- dtruncate("sweibull")
 ```
 
-So `dtsweibull()` is the function that computes the density function of `stweibull`, which is the truncated shifted Weibull distribution.
+So `dtsweibull()` is the function that computes the density function of `tsweibull`, which is the shifted and truncated Weibull distribution.
 
 Let us graphically represent the output of the three functions:
 
 ```{r}
-orig_density <- dweibull(x = x, shape = 3, scale = 1)
-shift_density <- dsweibull(x = x, shape = 3, scale = 1, shift = 1)
-trunc_shift_density <- dtsweibull(x = x, shape = 3, scale = 1, L = 3, U = 11, shift = 1)
+orig_density <- dweibull(x = x, shape = 1.5, scale = 1)
+shift_density <- dsweibull(x = x, shape = 1.5, scale = 1, shift = 1)
+shift_trunc_density <- dtsweibull(x = x, shape = 1.5, scale = 1, L = 1.5, U = 3, shift = 1)
 ```
 
 ```{r}
 df <- data.frame(x=x, 
                  type = factor(c(rep("orig_density", times=length(x)),
                     rep("shift_density", times=length(x)),
-                    rep("trunc_shift_density", times=length(x))),
-                    levels = c("orig_density", "shift_density", "trunc_shift_density")), 
-                  value = c(orig_density, shift_density, trunc_shift_density))
+                    rep("shift_trunc_density", times=length(x))),
+                    levels = c("orig_density", "shift_density", "shift_trunc_density")), 
+                  value = c(orig_density, shift_density, shift_trunc_density))
 
 pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=type)) +
   geom_line(size=1) +
   scale_color_manual(values = c("orig_density" = "cyan3", 
                                 "shift_density" = "#89FF99", 
-                                "trunc_shift_density" = "#FF89B4")) +
-  xlab("Value") + ylab("Density") +
-  ggtitle(paste("Density plot for non-transformed, shifted and","truncated shifted Normal distributions", sep = "\n")) +
+                                "shift_trunc_density" = "#FF89B4")) +
+  xlab("Value") + ylab("Density") + ylim(c(0,1.9)) +
+  ggtitle(paste("Density plot for non-transformed, shifted and","shifted and truncated Normal distributions", sep = "\n")) +
   theme(legend.title=element_blank(), legend.text= element_text(size=10),
   plot.title = element_text(size=14), axis.title=element_text(size=12))
 
 print(pl)
 ```
 
-Let us see graphically the differences between the density function of normal distribution, of a shifted truncated normal distribution and of a truncated shifted normal distribution.
+Let us see graphically the differences between the density function of Weibull distribution, of a truncated and shifted Weibull distribution and of a shifted and truncated Weibull distribution.
 
 ```{r}
 df <- data.frame(x=x, 
@@ -183,43 +185,45 @@ pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=type)) +
   scale_color_manual(values = c("orig_density" = "cyan3", 
                                 "trunc_shift_density" = "#89FF99", 
                                 "shift_trunc_density" = "#FF89B4")) +
-  xlab("Value") + ylab("Density") +
-  ggtitle(paste("Density plot for non-transformed, truncated-shifted", "and shifted-truncated Normal distribution", sep="\n")) +
+  xlab("Value") + ylab("Density") + ylim(c(0,1.9)) +
+  ggtitle(paste("Density plot for non-transformed, truncated-shifted", 
+                "and shifted-truncated Weibull distribution", sep="\n")) +
   theme(legend.title=element_blank(), legend.text= element_text(size=10),
   plot.title = element_text(size=14), axis.title=element_text(size=12))
 
 print(pl)
 ```
 
-Looking at the figure we can see that a shifted truncated distribution is different from a truncated shifted distribution.
+Looking at the figure we can see that a truncated and shifted distribution is different from a shifted amd truncated distribution.
 
 Let us analyze the other distributions functions:
 
-* probability distribution function of truncated-shifted Weibull distribution and of shifted-truncated Weibull distribution:
+* probability distribution function of a truncated and shifted Weibull distribution and of a shifted and truncated Weibull distribution:
 
 ```{r}
 pstweibull <- pshift("tweibull")
 ptsweibull <- ptruncate("sweibull")
-orig_distr <- pweibull(q = x, shape = 3, scale = 1)
-st_distr <- pstweibull(q = x, shape = 3, scale = 1, L = 3, U = 11, shift = 1)
-ts_distr <- ptsweibull(q = x, shape = 3, scale = 1, L = 3, U = 11, shift = 1)
+orig_distr <- pweibull(q = x, shape = 1.5, scale = 1)
+shift_trunc_distr <- pstweibull(q = x, shape = 1.5, scale = 1, L = 1.5, U = 3, shift = 1)
+trunc_shift_distr <- ptsweibull(q = x, shape = 1.5, scale = 1, L = 1.5, U = 3, shift = 1)
 ```
 
 ```{r}
 df <- data.frame(x=x, 
                  type = factor(c(rep("orig_distr", times=length(x)),
-                    rep("st_distr", times=length(x)),
-                    rep("ts_distr", times=length(x))),
-                    levels = c("orig_distr", "st_distr", "ts_distr")), 
-                  value = c(orig_distr, st_distr, ts_distr))
+                    rep("shift_trunc_distr", times=length(x)),
+                    rep("trunc_shift_distr", times=length(x))),
+                    levels = c("orig_distr", "shift_trunc_distr", "trunc_shift_distr")), 
+                  value = c(orig_distr, shift_trunc_distr, trunc_shift_distr))
 
 pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=type)) +
   geom_line(size=1) +
   scale_color_manual(values = c("orig_distr" = "cyan3", 
-                                "st_distr" = "#89FF99", 
-                                "ts_distr" = "#FF89B4")) +
+                                "shift_trunc_distr" = "#89FF99", 
+                                "trunc_shift_distr" = "#FF89B4")) +
   xlab("Value") + ylab("Density") +
-  ggtitle("Distribution plot for transformed and not-transformed Normal distributions") +
+  ggtitle(paste("Distribution plot for non-transformed, truncated-shifted", 
+                "and shifted-truncated Weibull distribution", sep="\n")) +
   theme(legend.title=element_blank(), legend.text= element_text(size=10),
   plot.title = element_text(size=14), axis.title=element_text(size=12))
 
@@ -227,62 +231,64 @@ print(pl)
 ```
 
 
-* quantile function of truncated-shifted Weibull distribution and of shifted-truncated Weibull distribution:
+* quantile function of a truncated and shifted Weibull distribution and of a shifted and truncated Weibull distribution:
 
 ```{r}
 qstweibull <- qshift("tweibull")
 qtsweibull <- qtruncate("sweibull")
 x <- 1:999/1000
-orig_quant <- qweibull(p = x, shape = 3, scale = 1)
-st_quant <- qstweibull(p = x, shape = 3, scale = 1, L = 3, U = 11, shift = 1)
-ts_quant <- qtsweibull(p = x, shape = 3, scale = 1, L = 3, U = 11, shift = 1)
+orig_quant <- qweibull(p = x, shape = 1.5, scale = 1)
+shift_trunc_quant <- qstweibull(p = x, shape = 1.5, scale = 1, L = 1.5, U = 3, shift = 1)
+trunc_shift_quant <- qtsweibull(p = x, shape = 1.5, scale = 1, L = 1.5, U = 3, shift = 1)
 ```
 
 ```{r}
 df <- data.frame(x=x, 
                  type = factor(c(rep("orig_quant", times=length(x)),
-                    rep("st_quant", times=length(x)),
-                    rep("ts_quant", times=length(x))),
-                    levels = c("orig_quant", "st_quant", "ts_quant")), 
-                  value = c(orig_quant, st_quant, ts_quant))
+                    rep("shift_trunc_quant", times=length(x)),
+                    rep("trunc_shift_quant", times=length(x))),
+                    levels = c("orig_quant", "shift_trunc_quant", "trunc_shift_quant")), 
+                  value = c(orig_quant, shift_trunc_quant, trunc_shift_quant))
 
 pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=type)) +
   geom_line(size=1) +
   scale_color_manual(values = c("orig_quant" = "cyan3", 
-                                "st_quant" = "#89FF99", 
-                                "ts_quant" = "#FF89B4")) +
+                                "shift_trunc_quant" = "#89FF99", 
+                                "trunc_shift_quant" = "#FF89B4")) +
   xlab("Value") + ylab("Density") +
-  ggtitle("Distribution plot for transformed and not-transformed Normal distributions") +
+  ggtitle(paste("Quantile plot for non-transformed, truncated-shifted", 
+                "and shifted-truncated Weibull distribution", sep="\n")) +
   theme(legend.title=element_blank(), legend.text= element_text(size=10),
   plot.title = element_text(size=14), axis.title=element_text(size=12))
 
 print(pl)
 ```
 
-* random generation function of truncated-shifted Weibull distribution and of shifted-truncated Weibull distribution:
+* random generation function of a truncated and shifted Weibull distribution and of a shifted and truncated Weibull distribution:
 
 ```{r}
 rstweibull <- rshift("tweibull")
 rtsweibull <- rtruncate("sweibull")
 orig_rand <- rweibull(n=1000, shape = 1.5, scale = 1)
-st_rand <- rstweibull(n=1000, shape = 1.5, scale = 1, L = 3, U = 11, shift = 1)
-ts_rand <- rtsweibull(n=1000, shape = 1.5, scale = 1, L = 3, U = 11, shift = 1)
+shift_trunc_rand <- rstweibull(n=1000, shape = 1.5, scale = 1, L = 1.5, U = 3, shift = 1)
+trunc_shift_rand <- rtsweibull(n=1000, shape = 1.5, scale = 1, L = 1.5, U = 3, shift = 1)
 ```
 
 ```{r}
 df <- data.frame(x=1:1000, 
                  type = factor(c(rep("orig_rand", times=1000),
-                    rep("st_rand", times=1000),
-                    rep("ts_rand", times=1000)),
-                    levels = c("orig_rand", "st_rand", "ts_rand")), 
-                  value = c(orig_rand, st_rand, ts_rand))
+                    rep("shift_trunc_rand", times=1000),
+                    rep("trunc_shift_rand", times=1000)),
+                    levels = c("orig_rand", "shift_trunc_rand", "trunc_shift_rand")), 
+                  value = c(orig_rand, shift_trunc_rand, trunc_shift_rand))
 
 pl <- ggplot(data = df, mapping = aes(x=value, group=type, fill=type)) +
         geom_density(alpha=0.6) +
         scale_fill_manual(values = c("orig_rand" = "cyan3",
-                              "st_rand" = "#89FF99",
-                              "ts_rand" = "#FF89B4")) +
-        ggtitle("Density plot for shifted and not-shifted Normal distributions") +
+                              "shift_trunc_rand" = "#89FF99",
+                              "trunc_shift_rand" = "#FF89B4")) +
+        ggtitle(paste("Density plot for non-transformed, truncated-shifted", 
+                      "and shifted-truncated Weibull distribution", sep="\n")) +
         theme(legend.title=element_blank(), legend.text= element_text(size=10),
         plot.title = element_text(size=14), axis.title=element_text(size=12))
 
@@ -290,172 +296,81 @@ print(pl)
 ```
 
 
-<!--
-## Other examples
+# Extending the computation
 
-Let us consider Poisson distribution and define the distribution function for shifted and truncated Poisson distribution.
+Once we demonstrated that we can generate distribution functions for truncated and shifted and for shifted and truncated distributions, we can use them for further implementations. Suppose we want to define a function for maximum likelihood estimate for truncated and shifted distributions and one for shifted and truncated distributions. In the following examples, we will continue to consider the Weibull distribution.
 
-```{r}
-dspois <- dshift("pois")
-pspois <- pshift("pois")
-qspois <- qshift("pois")
-rspois <- rshift("pois")
-
-dtpois <- dtruncate("pois")
-ptpois <- ptruncate("pois")
-qtpois <- qtruncate("pois")
-rtpois <- rtruncate("pois")
-```
-
-* Density function of shifted truncated and truncated shifted Poisson distribution.
+Let us start from the function for maximum likelihood estimate for truncated and shifted  Weibull distribution.
+We consider the previously defined density function, `dstweibull()`, for a truncated and shifted Weibull distribution and we use it inside the estimator function:  
 
 ```{r}
-# truncated shifted
-dtspois <- dtruncate("spois")
-# shifted truncated 
-dstpois <- dshift("tpois")
+ltweibull <- function(x, shift = 0 ,L = -Inf, U = Inf){
+  x1 <- x - shift
+  # starting values for parameters (scale, shape)
+  shape <- (sd(x1)/mean(x1))^(-1.086)
+  scale <- mean(x1)/gamma(1+1/shape)
+  # parameters vector definition
+  theta <- c(shape, scale)
+  # likelihood function
+  ll <- function(theta, x, shift = 0, L = -Inf, U = Inf){
+    shape <- theta[1]
+    scale <- theta[2]
+    ld <- dstweibull(x = x, shape = shape, scale = scale, shift = shift, L = L, U = U, log=TRUE)
+    -sum(ld)
+  }
+  # maximum likelihood estimation
+  optim(par = theta, fn = ll, x = x, shift=shift, L = L, U = U, method = "Nelder-Mead")[["par"]]
+}
 ```
+
+Let's test it to see how it works.  
+We consider the previously defined random generator function `rstweibull()` for a truncated and shifted Weibull distribution to create the sample for testing the maximum likelihood estimate function:  
 
 ```{r}
-x <- 1:10
-std_density <- dpois(x = x, lambda = 3)
-shift_trunc_density <- dstpois(x = x, lambda = 3, shift = 1, L = 2, U = 7)
-trunc_shift_density <- dtspois(x = x, lambda = 3, L = 2, U = 7, shift = 1)
+x <- rstweibull(n = 100000, shape = 1.6, scale = 1, shift = 1, L = 1, U = 2.5)
+# maximum likelihood estimate for the shifted and truncated weibull distribution
+ltweibull(x = x, shift=1, L = 1, U = 2.5)
 ```
+
+The maximum likelihood estimate function produces a good estimate of the scale and shape parameters of truncated and shifted Weibull distribution. 
+
+Let us continue with the function for maximum likelihood estimate for shifted and truncated Weibull distribution.
+
+We will consider the previously defined density function, `dtsweibull()`, for a shifted and truncated Weibull distribution. We use `dtsweibull()` inside the estimator function:  
 
 ```{r}
-df <- data.frame(x=x, 
-                 type = factor(c(rep("std_density", times=length(x)),
-                    rep("shift_trunc_density", times=length(x)),
-                    rep("trunc_shift_density", times=length(x))),
-                    levels = c("std_density", "shift_trunc_density", "trunc_shift_density")), 
-                  value = c(std_density, shift_trunc_density, trunc_shift_density))
-
-pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=type)) +
-  geom_line(size=1) +
-  scale_color_manual(values = c("std_density" = "cyan3", 
-                                "shift_trunc_density" = "#89FF99", 
-                                "trunc_shift_density" = "#FF89B4")) +
-  xlab("Value") + ylab("Density") +
-  ggtitle(paste("Density plot for non-transformed, shifted and","truncated shifted Normal distributions", sep = "\n")) +
-  theme(legend.title=element_blank(), legend.text= element_text(size=10),
-  plot.title = element_text(size=14), axis.title=element_text(size=12))
-
-print(pl)
+ltweibull <- function(x, shift = 0, L = -Inf, U = Inf){
+  x1 <- x - shift
+  # starting values for parameters (scale, shape)
+  shape <- (sd(x1)/mean(x1))^(-1.086)
+  scale <- mean(x1)/gamma(1+1/shape)
+  # parameters vector definition
+  theta <- c(shape, scale)
+  # likelihood function
+  ll <- function(theta, x, L = -Inf, U = Inf){
+    shape <- theta[1]
+    scale <- theta[2]
+    ld <- dtsweibull(x = x, shape = shape, scale = scale, shift = shift, L = L, U = U, log=T)
+    -sum(ld)
+  }
+  # maximum likelihood estimation
+  optim(par = theta, fn = ll, x = x, L = L, U = U, method = "Nelder-Mead")[["par"]]
+}
 ```
 
-* Probability function of shifted truncated and truncated shifted Poisson distribution.
+Let's test it to see how it works.  
+We consider the previously defined random generator function `rtsweibull()` for a shifted and truncated Weibull distribution to create the sample for testing the maximum likelihood estimate function:  
 
 ```{r}
-# truncated shifted
-ptspois <- ptruncate("spois")
-# shifted truncated 
-pstpois <- pshift("tpois")
+x <- rtsweibull(n = 100000, shape = 1.6, scale = 1, shift = 1, L = 0.5, U = 3)
+# maximum likelihood estimate for the shifted weibull distribution
+ltweibull(x = x, shift = 1, L = 0.5, U = 3)
 ```
 
+Also in this case, the maximum likelihood estimate function produces a good estimate of the scale and shape parameters of shifted and truncated Weibull distribution. 
 
-```{r}
-std_distr <- ppois(q = x, lambda = 3)
-st_distr <- pstpois(q = x, lambda = 3, L = 2, U = 7, shift = 1)
-ts_distr <- ptspois(q = x, lambda = 3, L = 2, U = 7, shift = 1)
-```
-
-```{r}
-df <- data.frame(x=x, 
-                 type = factor(c(rep("std_distr", times=length(x)),
-                    rep("st_distr", times=length(x)),
-                    rep("ts_distr", times=length(x))),
-                    levels = c("std_distr", "st_distr", "ts_distr")), 
-                  value = c(std_distr, st_distr, ts_distr))
-
-pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=type)) +
-  geom_line(size=1) +
-  scale_color_manual(values = c("std_distr" = "cyan3", 
-                                "st_distr" = "#89FF99", 
-                                "ts_distr" = "#FF89B4")) +
-  xlab("Value") + ylab("Density") +
-  ggtitle("Distribution plot for transformed and not-transformed Normal distributions") +
-  theme(legend.title=element_blank(), legend.text= element_text(size=10),
-  plot.title = element_text(size=14), axis.title=element_text(size=12))
-
-print(pl)
-```
-
-* Quantile function of shifted truncated and truncated shifted Poisson distribution.
-
-```{r}
-# truncated shifted
-qtspois <- qtruncate("spois")
-# shifted truncated 
-qstpois <- qshift("tpois")
-```
-
-```{r}
-x <- 1:999/1000
-std_distr <- qpois(p = x, lambda = 3)
-st_distr <- qstpois(p = x, lambda = 3, L = 2, U = 7, shift = 1)
-ts_distr <- qtspois(p = x, lambda = 3, L = 2, U = 7, shift = 1)
-```
-
-```{r}
-df <- data.frame(x=x, 
-                 type = factor(c(rep("std_distr", times=length(x)),
-                    rep("st_distr", times=length(x)),
-                    rep("ts_distr", times=length(x))),
-                    levels = c("std_distr", "st_distr", "ts_distr")), 
-                  value = c(std_distr, st_distr, ts_distr))
-
-pl <- ggplot(data = df, mapping = aes(x=x, y=value, col=type)) +
-  geom_line(size=1) +
-  scale_color_manual(values = c("std_distr" = "cyan3", 
-                                "st_distr" = "#89FF99", 
-                                "ts_distr" = "#FF89B4")) +
-  xlab("Value") + ylab("Density") +
-  ggtitle("Distribution plot for transformed and not-transformed Normal distributions") +
-  theme(legend.title=element_blank(), legend.text= element_text(size=10),
-  plot.title = element_text(size=14), axis.title=element_text(size=12))
-
-print(pl)
-```
-
-
-* random generation function of truncated-shifted normal distribution and of shifted-truncated poisson distribution:
-
-```{r}
-# truncated shifted
-rtspois <- rtruncate("spois")
-# shifted truncated 
-rstpois <- rshift("tpois")
-```
-
-```{r}
-std_rand <- rpois(n=1000, lambda = 3)
-st_rand <- rstpois(n=1000, lambda = 3, L = 2, U = 7, shift = 1)
-ts_rand <- rtspois(n=1000, lambda = 3, L = 2, U = 7, shift = 1)
-```
-
-```{r}
-df <- data.frame(x=1:1000, 
-                 type = factor(c(rep("std_rand", times=1000),
-                    rep("st_rand", times=1000),
-                    rep("ts_rand", times=1000)),
-                    levels = c("std_rand", "st_rand", "ts_rand")), 
-                  value = c(std_rand, st_rand, ts_rand))
-
-pl <- ggplot(data = df, mapping = aes(x=value, group=type, fill=type)) +
-        geom_density(alpha=0.6) +
-        scale_fill_manual(values = c("std_rand" = "cyan3",
-                              "st_rand" = "#89FF99",
-                              "ts_rand" = "#FF89B4")) +
-        ggtitle("Density plot for shifted and not-shifted Normal distributions") +
-        theme(legend.title=element_blank(), legend.text= element_text(size=10),
-        plot.title = element_text(size=14), axis.title=element_text(size=12))
-
-print(pl)
-```
-
--->
-
-
-
-
+# Bibliography
+Giro V. . R package qshift: A functional programming approach to shifted probability ditributions. url  
+Spanò A. . R package qdist: A functional programming approach to truncated probability ditributions. url  
+Spanò A. . Ramarro. R for Developers. [http://www.quantide.com/ramarro-r-for-developers/](http://www.quantide.com/ramarro-r-for-developers/). Accessed: 2016-09-20   
+Wickham H. . Advanced r. [http://adv-r.had.co.nz/](http://adv-r.had.co.nz/). Accessed: 2016-09-20.  
