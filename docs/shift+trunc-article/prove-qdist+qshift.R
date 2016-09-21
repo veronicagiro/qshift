@@ -1148,10 +1148,10 @@ ltweibull <- function(x, L = -Inf, U = Inf){
 
 rsweibull <- rshift("weibull")
 rtsweibull <- rtruncate("sweibull")
-x <- rtsweibull(n = 100000, shape = 1, scale = 1.5, shift = 1, L = 5, U = 10)
+x <- rtsweibull(n = 10000000, shape = 1, scale = 1.5, shift = 1, L = 1, U = 3)
 
 # maximum likelihood estimate for the shifted weibull distribution
-ltweibull(x = x, L = 5, U = 10)
+ltweibull(x = x, L = 1, U = 3)
 
 ## funzionaaaaaaaaaaaa
 
@@ -1165,33 +1165,33 @@ dstweibull <- dshift("tweibull")
 
 ltweibull <- function(x, shift = 0 ,L = -Inf, U = Inf){
   # starting values for parameters (scale, shape) and shift
-  #shift <- min(x) - 0.01
+  shift <- min(x) - 0.01
   x1 <- x - shift
   #x1 <- x
   shape <- (sd(x1)/mean(x1))^(-1.086)
   scale <- mean(x1)/gamma(1+1/shape)
   # parameters vector definition
-  #theta <- c(shape, scale, shift)
-  theta <- c(shape, scale)
+  theta <- c(shape, scale, shift)
+  #theta <- c(shape, scale)
   # likelihood function
-  ll <- function(theta, x, shift = 0, L = -Inf, U = Inf){
+  ll <- function(theta, x, L = -Inf, U = Inf){
     shape <- theta[1]
     scale <- theta[2]
-    #shift <- theta[3]
+    shift <- theta[3]
     ld <- dstweibull(x = x, shape = shape, scale = scale, shift = shift, L = L, U = U, log=TRUE)
     -sum(ld)
   }
   # maximum likelihood estimation
-  optim(par = theta, fn = ll, x = x, shift=shift, L = L, U = U, method = "Nelder-Mead")[["par"]]
+  optim(par = theta, fn = ll, x = x, L = L, U = U, method = "Nelder-Mead")[["par"]]
 }
 
 
 rtweibull <- rtruncate("weibull")
 rstweibull <- rshift("tweibull")
-x <- rstweibull(n = 100000, shape = 3, scale = 1.5, shift = 1, L = 1, U = 5)
+x <- rstweibull(n = 100000, shape = 1, scale = 1.5, shift = 1, L = 1, U = 1000)
 x <- rstweibull(n = 100000, shape = 1, scale = 5, shift=2, L = 1, U = 100)
 # maximum likelihood estimate for the shifted weibull distribution
-ltweibull(x = x, shift=1, L = 1, U = 50)
+ltweibull(x = x, L = 1, U = 1000)
 ltweibull(x = x, shift=2, L = 1, U = 100)
 
 

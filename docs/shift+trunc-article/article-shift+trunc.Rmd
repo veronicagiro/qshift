@@ -2,7 +2,6 @@
 title: R functional programming approach for truncated and shifted and for shifted
   and truncated probability distribution functions
 output:
-  pdf_document: default
   html_document:
     highlight: null
     theme: null
@@ -324,7 +323,7 @@ Let us start from the function for maximum likelihood estimate for truncated and
 We consider the previously defined density function, `dstweibull()`, for a truncated and shifted Weibull distribution and we use it inside the estimator function:  
 
 ```{r l_trunc_shift}
-ltweibull <- function(x, shift = 0 ,L = -Inf, U = Inf){
+lstweibull <- function(x, shift = 0 ,L = -Inf, U = Inf){
   x1 <- x - shift
   # starting values for parameters (scale, shape)
   shape <- (sd(x1)/mean(x1))^(-1.086)
@@ -349,7 +348,7 @@ We consider the previously defined random generator function `rstweibull()` for 
 ```{r l_trunc_shift_ex}
 x <- rstweibull(n = 100000, shape = 1.6, scale = 1, shift = 1, L = 1, U = 2.5)
 # maximum likelihood estimate for the shifted and truncated weibull distribution
-ltweibull(x = x, shift=1, L = 1, U = 2.5)
+lstweibull(x = x, shift=1, L = 1, U = 2.5)
 ```
 
 The maximum likelihood estimate function produces a good estimate of the scale and shape parameters of truncated and shifted Weibull distribution. 
@@ -359,7 +358,7 @@ Let us continue with the function for maximum likelihood estimate for shifted an
 We will consider the previously defined density function, `dtsweibull()`, for a shifted and truncated Weibull distribution and we use it inside the estimator function:  
 
 ```{r l_shift_trunc}
-ltweibull <- function(x, shift = 0, L = -Inf, U = Inf){
+ltsweibull <- function(x, shift = 0, L = -Inf, U = Inf){
   x1 <- x - shift
   # starting values for parameters (scale, shape)
   shape <- (sd(x1)/mean(x1))^(-1.086)
@@ -384,7 +383,7 @@ We consider the previously defined random generator function `rtsweibull()` for 
 ```{r l_shift_trunc_ex}
 x <- rtsweibull(n = 100000, shape = 1.6, scale = 1, shift = 1, L = 0.5, U = 3)
 # maximum likelihood estimate for the shifted weibull distribution
-ltweibull(x = x, shift = 1, L = 0.5, U = 3)
+ltsweibull(x = x, shift = 1, L = 0.5, U = 3)
 ```
 
 Also in this case, the maximum likelihood estimate function produces a good estimate of the scale and shape parameters of shifted and truncated Weibull distribution. 
