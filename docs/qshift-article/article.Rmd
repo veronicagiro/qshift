@@ -389,7 +389,7 @@ dsweibull <- dshift("weibull")
 and, subsequently, by using `dsweibull()` within an estimator function:
 
 ```{r max_likelihood_est}
-ltweibull <- function(x){
+lsweibull <- function(x){
   # starting values for parameters (scale, shape) and shift
   shift <- min(x) - 0.01
   x1 <- x - shift
@@ -418,7 +418,7 @@ rsweibull <- rshift("weibull")
 x <- rsweibull(n = 100000, shape = 1, scale = 5, shift = 1)
 
 # maximum likelihood estimate for the shifted weibull distribution
-ltweibull(x = x)
+lsweibull(x = x)
 ```
 
 
