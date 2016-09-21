@@ -1,2 +1,0 @@
-This article demonstrates that a functional programming approach can be useful for generating shifted distribution functions, that are as similar as possible to the existing non shifted ones, for any distribution chosen.
-

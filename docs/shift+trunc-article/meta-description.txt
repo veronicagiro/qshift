@@ -1,2 +1,0 @@
-This article demonstrates the power of R functional nature. In particular, for generating functions for truncated and shifted and for shifted and truncated distributions only combining the functions of R packages qdist and qshift, built according to this approach.  
-
